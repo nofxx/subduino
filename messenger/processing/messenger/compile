@@ -1,0 +1,4 @@
+
+rm -Rf Messenger.jar library messenger
+javac -d . -source 1.4 -target 1.4 -classpath /home/tom/bin/processing/lib/core.jar Messenger.java && jar -cf messenger.jar messenger && mkdir library && mv messenger.jar library
+
