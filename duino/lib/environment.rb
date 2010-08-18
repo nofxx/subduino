@@ -1,11 +1,12 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__))) #, '..', 'lib'))
 require 'rubygems'
-require 'god'
 require 'sinatra'
 require 'stringio'
 require 'yaml'
-require 'erb'
+require 'haml'
 require 'optparse'
-require File.dirname(__FILE__) + '/duino'
+require 'duino'
 
 config = {
   'username' =>  nil,
@@ -21,7 +22,7 @@ end
 DUINO = Duino.new(config)
 
 # Require app
-require File.dirname(__FILE__) + '/app'
+require "app"
 
 Sinatra::Application.public = File.dirname(__FILE__) + "/../public"
 Sinatra::Application.views = File.dirname(__FILE__) + "/../views"

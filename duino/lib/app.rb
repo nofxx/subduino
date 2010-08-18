@@ -4,21 +4,50 @@ before do
       [user, pass] == [DUINO_CONFIG['username'], DUINO_CONFIG['password']]
     end
   end
-  DUINO.ping
+  # DUINO.ping
 end
+
+# This one shows how you can use refer to
+# variables in your Haml views.
+# This method uses member variables.
+
+get '/hello/:name' do |name|
+  @name = name
+  haml :hello
+end
+# This method shows you how to inject
+# local variables
+
+get '/goodbye/:name' do |name|
+  haml :goodbye, :locals => { :name => name }
+end
+
+# __END__
+# @@ layout
+
+# %html
+#   %head
+#   %title Haml on Sinatra Example
+# %body     =yield @@ index
+# #header
+# %h1 Haml on Sinatra Example
+# #content
+# %p     This is an example of using Haml on Sinatra.     You can use Haml in all your projeccts now, instead     of Erb.
+#   I'm sure you'll find it much easier! @@ hello
+# %h1= "Hello #{@name}!" @@ goodbye %h1= "Goodbye #{name}!"
 
 get '/' do
   @statuses = DUINO.status
   @watches = []
-  @statuses.each do |watch, status|
-    @watches << watch.to_s
-  end
-  @watches = @watches.group_by { |w| @statuses[w][:state].to_s }
-  @groups = DUINO.groups
+  # @statuses.each do |watch, status|
+  #   @watches << watch.to_s
+  # end
+  # @watches = @watches.group_by { |w| @statuses[w][:state].to_s }
+  @groups = [] #]DUINO.groups
   @host = `hostname`
   @stats = Duino.cpu_status
   @footer = "Duino v0.2.5 - #{@host}"
-  show(:status, @host)
+  show(:index, @host)
 end
 
 get '/w/:watch' do
@@ -26,7 +55,7 @@ get '/w/:watch' do
   @status = DUINO.status[@watch][:state]
   @commands = Duino.possible_statuses(@status)
   @log = DUINO.last_log(@watch)
-  show(:watch, @watch)
+  show(:switch, @watch)
 end
 
 get '/g/:group' do
@@ -41,7 +70,7 @@ end
 get '/w/:watch/:command' do
   @watch = params["watch"]
   @command = params["command"]
-  @success = DUINO.send(@command, @watch)
+  @success = DUINO.switch(@command, @watch)
   @success = false if @success == []
   @log = DUINO.last_log(@watch)
   show(:command, "#{@command}ing #{@watch}")
@@ -49,7 +78,7 @@ end
 
 get '/o' do
   @commands = %w{ true }
-  show(:watch, "god itself")
+  show(:switch, "god itself")
 end
 
 get '/i' do
@@ -71,5 +100,5 @@ private
 
 def show(template, title = 'Duino')
   @title = title
-  erb(template)
+  haml(template)
 end

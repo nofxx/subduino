@@ -17,12 +17,12 @@ function submitCommand(action, watch) {
     comm = action;
   }
 
-  if (confirm("God will " + comm + " " + watch + "..")) {
+//  if (confirm("God will " + comm + " " + watch + "..")) {
     var res =  document.getElementById("command_result");
     iui.showPageByHref("/w/" + watch + "/" + comm, null, null, res, null);
-  } else {
-    act.setAttribute("toggled",  (s == "true") ? "false" : "true");
-  }
+//  } else {
+//act.setAttribute("toggled",  (s == "true") ? "false" : "true");
+//  }
   return false;
 }
 

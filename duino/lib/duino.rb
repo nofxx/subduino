@@ -6,11 +6,15 @@ class Duino
     # ping
   end
 
+  def switch(comm, pin)
+    puts "[OUT] #{comm} #{pin}"
+  end
+
   # ping server to ensure that it is responsive
   def ping
     tries = 3
     begin
-      @server.ping
+     # @server.ping
     rescue Exception => e
       retry if (tries -= 1) > 1
       raise e, "The server is not available (or you do not have permissions to access it)"
@@ -37,12 +41,13 @@ class Duino
 
   def self.cpu_status
     #stat = `cat /proc/stat`.split(" ")
-    top = `top -bn 1`
-    info, tasks, cpus, mem, swap, *rest = *top
-    # Use array to keep order (ruby < 1.9)
-    [[:info, info.gsub(/top - |\d{2}:\d{2}(:\d{2})?(\s|,)|\saverage/, "")],
-      [:cpus, cpus.gsub("Cpu\(s\): ", "").split(", ")[0..4].join(", ")],
-      [:mem, mem.gsub("Mem:  ", "").gsub(/(\d*k)/) { ($1.to_i / 1000).to_s }]]
+    # top = `top -bn 1`
+    # info, tasks, cpus, mem, swap, *rest = *top
+    # # Use array to keep order (ruby < 1.9)
+    # [[:info, info.gsub(/top - |\d{2}:\d{2}(:\d{2})?(\s|,)|\saverage/, "")],
+    #   [:cpus, cpus.gsub("Cpu\(s\): ", "").split(", ")[0..4].join(", ")],
+    #   [:mem, mem.gsub("Mem:  ", "").gsub(/(\d*k)/) { ($1.to_i / 1000).to_s }]]
+    []
   end
 
 private
@@ -68,7 +73,7 @@ private
   end
 
   def status_command
-    @server.status
+  #  @server.status
   end
 
   #

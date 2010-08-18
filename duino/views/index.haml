@@ -1,0 +1,53 @@
+!!! Transitional
+%head
+  %title= @title
+  %meta{:content => "width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;", :name => "viewport"}/
+  %style{:media => "screen", :type => "text/css"} @import "/iui/iuix.css";
+  %style{:media => "screen", :type => "text/css"} @import "/app.css";
+  %script{:src => "/app.js", :type => "application/x-javascript"}
+  %script{:src => "/iui/iuix.js", :type => "application/x-javascript"}
+  :javascript
+    iui.animOn = true;
+
+%body
+  .toolbar
+    %h1#pageTitle= @title
+    %a#backButton.button{:href => "#"}
+    %a.button{:href => "/", :target => "_self"} Refresh
+  %ul#home{:selected => "true", :title => @title}
+    - unless true ## @groups.empty?
+      %li.group Groups
+    - @groups.each do |watch|
+      %li{:id => watch}
+        %a{:href => "/g/#{watch}"}
+          %img{:src => "icons/groups.png"}/
+          = watch
+    - @watches.each do |state, watches|
+      %li.group= state.capitalize
+      - for watch in watches.sort
+        %li{:id => watch}
+          %a{:href => "/w/#{watch}"}
+            %img{:src => "icons/#{@statuses[watch][:state]}.png"}/
+            = watch
+    %li.group Extras
+    %li#god_opts
+      %a{:href => "/o"}
+        %img{:src => "icons/monitor.png"}/
+        Switch
+    %li#top_show
+      %a{:href => "/t"}
+        %img{:src => "icons/terminal.png"}/
+        Top
+    %li#home_icon
+      %a{:href => "/i"}
+        %img{:src => "icons/bookmark.png"}/
+        Icon
+    %li.group About
+    - for stat in @stats
+      %li.tiny
+        %img{:src => "icons/#{stat[0]}.png"}/
+        = stat[1]
+    %li.tiny
+      %img{:src => "icons/ruby.png"}/
+      = @footer
+      [ok]

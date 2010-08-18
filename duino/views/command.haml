@@ -1,0 +1,4 @@
+.panel{:id => "#{@command}ing_#{@watch}", :title => @title}
+  %h2= @success ? 'Success' : 'Failed'
+  %fieldset
+    %div{:align => "left"}= @log
