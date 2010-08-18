@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require File.dirname(__FILE__) + '/../lib/environment'
+
+OptionParser.new { |op|
+  op.on('-e env')    { |val| set :environment, val.to_sym }
+  op.on('-s server') { |val| set :server, val }
+  op.on('-p port')   { |val| set :port, val.to_i }
+}.parse!(ARGV.dup)
+
+set :run, true

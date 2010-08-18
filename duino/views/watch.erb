@@ -1,0 +1,44 @@
+<div id="<%= @watch %>_commands" title="<%= @title %>" class="panel">
+  <% if @status %>
+    <h2> Status </h2>
+    <fieldset>
+      <div align="center"><p>
+      <b><%= @status.to_s.capitalize %></b> [<%= Time.now.strftime("%H:%m %m/%d") %>]</p></div>
+    </fieldset>
+  <% end %>
+  <% if @log %>
+    <h2> Log </h2>
+    <fieldset>
+      <div align='left'><%= @log %></div>
+    </fieldset>
+  <% end %>
+  <% if @child %>
+    <h2> Watches </h2>
+    <fieldset><ul>
+      <% for child in @child %>
+        <li id="<%= child[0] %>">
+        <a href="/w/<%= child[0] %>"><img src="icons/<%= child[1] %>.png"></img><%= child[0] %></a></li>
+      <% end %>
+    </ul></fieldset>
+  <% end %>
+  <h2> Commands </h2>
+  <% unless @commands.empty? %>
+  <fieldset>
+    <% ["power", "monitor"].each_with_index do |comm, i| %>
+      <div class="row">
+        <label><%= comm.capitalize %></label>
+        <div id="toggle_<%= comm %>" class="toggle" toggled="<%= @commands[i] %>" onclick="submitCommand('<%= comm %>', '<%= @watch %>')">
+          <span class="thumb"></span><span class="toggleOn">ON</span>
+          <span class="toggleOff">OFF</span>
+        </div>
+      </div>
+    <% end %>
+  </fieldset>
+  <% else %>
+    <a class="greenButton" onclick="submitCommand('start', '<%= @watch %>')">Start <%= " All" if @child %></a>
+    <a class="yellowButton" onclick="submitCommand('stop', '<%= @watch %>')">Stop <%= " All" if @child %></a>
+  <% end %>
+  <a class="redButton" onclick="submitCommand('restart', '<%= @watch %>')">Restart <%= " All" if @child %></a>
+  <div id="command_result"></div>
+</div>
+
