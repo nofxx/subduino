@@ -21,19 +21,20 @@ DATA_BITS = 8
 DATA_STOP = 1
 parity = SerialPort::NONE
 
-  @redis = Redis.new(:timeout => 0)
+@redis = Redis.new(:timeout => 0)
 @sp = SerialPort.new("/dev/ttyUSB0")#, BAUDS) #, DATA_BITS, DATA_STOP, parity)
 @q = Queue.new
 
 Thread.new do
   loop do
-    while data = @sp.getc
-      puts data
+    while data = @sp.gets
+      if data =~ /^x/
+        puts "[COMM] #{data}"
+      else
+        puts "[ARDUINO] #{data}"
+      end
     end
   end
-end
-Thread.new do
-
 end
 
 EM.run do
@@ -43,20 +44,11 @@ EM.run do
   puts @sp.get_modem_params
   puts
 
-  # line = []
-
-
-
-
-# loop do
-  #   # key....
-  #   1
-  # end
   Thread.new do
     @redis.subscribe('ard') do |on|
       on.subscribe {|klass, num_subs| puts "Subscribed to #{klass} (#{num_subs} subscriptions)" }
       on.message do |klass, msg|
-        puts "#{klass} received: #{msg}"
+        puts "[SUB] #{msg}"
         @q << msg
         if msg == 'exit'
           @redis.unsubscribe

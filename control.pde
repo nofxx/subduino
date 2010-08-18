@@ -11,7 +11,6 @@
 //#include <Rub.h>
 
 #define endPin 12
-
 #define digPin 13    // LED connected to digital pin 13
 
 int ledPin = 6;
@@ -26,19 +25,17 @@ Messenger message = Messenger();
 void messageReady() {
   int pin = 2;
   int val = 0;
-  Serial.print("MESSAGE");
+  Serial.println("TEST 25 255 1340");
 
-       // Loop through all the available elements of the message
+  // Loop through all the available elements of the message
   while ( message.available() && pin <= endPin ) {
-  // Set the pin as determined by the message
-         val = message.readInt();
-         Serial.print("x");
-         Serial.print(val);
-         // digitalWrite( relPin, val );
-         // digitalWrite( digPin, val );
-         analogWrite( pin, val );
-         pin=pin+1;
-      }
+    val = message.readInt();
+    // Set the pin as determined by the message
+    analogWrite(pin, val);
+    pin = pin + 1;
+  }
+  Serial.println("FIM");
+
 }
 
 
