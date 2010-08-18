@@ -10,7 +10,10 @@
 #include <Messenger.h>
 //#include <Rub.h>
 
+#define endPin 12
+
 #define digPin 13    // LED connected to digital pin 13
+
 int ledPin = 6;
 int relPin = 3;
 int btnPin = 2;
@@ -21,17 +24,19 @@ Messenger message = Messenger();
 
 // Create the callback function
 void messageReady() {
-    int pin = 0;
-    int val = 0;
-    Serial.print("MESSAGE");
+  int pin = 2;
+  int val = 0;
+  Serial.print("MESSAGE");
 
        // Loop through all the available elements of the message
-       while ( message.available() ) {
+  while ( message.available() && pin <= endPin ) {
   // Set the pin as determined by the message
          val = message.readInt();
-         digitalWrite( relPin, val );
-         digitalWrite( digPin, val );
-         analogWrite( ledPin, val );
+         Serial.print("x");
+         Serial.print(val);
+         // digitalWrite( relPin, val );
+         // digitalWrite( digPin, val );
+         analogWrite( pin, val );
          pin=pin+1;
       }
 }
