@@ -24,9 +24,11 @@ int txPin = 1;
 int relPin = 3;
 int ledPin = 6;
 // Input
+int knobPin = 0;
 int lightPin = 1;
-int btnPin = 2;
 int tempPin = 2;
+// Digital
+int btnPin = 2;
 int touchPin = 4;
 
 int btnState = 0;
@@ -85,7 +87,8 @@ void loop()  {
   // noInterrupts();
   //  interrupts();
   if (millis() % (3 * sec) == 0) {
-    sprintf(buffer, "C1:%d,C2:%d,LIGHT:%d,TEMP:%d",
+    sprintf(buffer, "C0:%d,C1:%d,C2:%d,LIGHT:%d,TEMP:%d",
+            analogRead(knobPin),
             digitalRead(btnPin),
             analogRead(touchPin),
             analogRead(lightPin),

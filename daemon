@@ -33,10 +33,7 @@ EM.run do
   @sp = SerialPort.new("/dev/ttyUSB0", BAUDS) #, DATA_BITS, DATA_STOP, parity)
   @qi = Queue.new
   @qo = Queue.new
-
-  log "Starting USB Connect..."
-  log @sp.modem_params
-  log @sp.get_modem_params
+  log "[USB] Starting USB Connect..." + @sp.get_modem_params.map { |k,v| "#{k}: #{v}" }.join(" ")
 
   #
   # Read I/O
@@ -46,7 +43,7 @@ EM.run do
       while data = @sp.gets
         if data =~ /:/
           #  log "[COMM] #{data.sub(/\n|\r/, '')}"
-          log "Reading --------------- #{Time.now.to_i}"
+          log "[INPUT] --------------- #{Time.now.to_i}"
           data.split(",").each do |d|
             comm, value = d.split(":")
             case comm
@@ -69,7 +66,7 @@ EM.run do
   #
   EM.defer do
     @redis.subscribe('ard') do |on|
-      on.subscribe {|klass, num_subs| log "Subscribed to #{klass} (#{num_subs} subscriptions)" }
+      on.subscribe {|klass, num_subs| log "[PubSub] Subscribed to #{klass} (#{num_subs} subscriptions)" }
       on.message do |klass, msg|
         log "[SUB] #{msg}"
         @qi << msg
@@ -77,7 +74,7 @@ EM.run do
           @redis.unsubscribe
         end
       end
-      on.unsubscribe {|klass, num_subs| log "Unsubscribed to #{klass} (#{num_subs} subscriptions)" }
+      on.unsubscribe {|klass, num_subs| log "[PubSub] Unsubscribed to #{klass} (#{num_subs} subscriptions)" }
     end
   end
 
@@ -109,7 +106,7 @@ EM.run do
   #     @sp.write(l.sub("\n", "\r"))
   #   end
   # }
-
+  log "Closing..."
   @sp.close
 
 
