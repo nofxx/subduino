@@ -18,7 +18,13 @@ function submitCommand(action, watch) {
   }
 
 //  if (confirm("God will " + comm + " " + watch + "..")) {
-    var res =  document.getElementById("command_result");
+  //var results =  document.getElementById("results");
+  var divTag = document.createElement("div");
+  divTag.id = "cresult";
+  document.body.appendChild(divTag);
+  var res =  document.getElementById("cresult");
+
+ // res.innerHTML = "";
     iui.showPageByHref("/w/" + watch + "/" + comm, null, null, res, null);
 //  } else {
 //act.setAttribute("toggled",  (s == "true") ? "false" : "true");

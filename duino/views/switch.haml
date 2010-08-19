@@ -23,6 +23,7 @@
   - unless @commands.empty?
     %fieldset
       - ["power", "monitor"].each_with_index do |comm, i|
+        //%h1= comm
         .row
           %label= comm.capitalize
           .toggle{:id => "toggle_#{comm}", :onclick => "submitCommand('#{comm}', '#{@watch}')", :toggled => @commands[i]}
@@ -36,4 +37,4 @@
       Stop #{" All" if @child}
   %a.redButton{:onclick => "submitCommand('restart', '#{@watch}')"}
     Restart #{" All" if @child}
-  #command_result
+  #results
