@@ -16,13 +16,17 @@
 #define day  86400000
 
 #define endPin 12
-#define digPin 13    // LED connected to digital pin 13
+#define infoPin 13    // LED connected to digital pin 13
 
-int ledPin = 6;
+// Output
+int rxPin = 0;
+int txPin = 1;
 int relPin = 3;
+int ledPin = 6;
+// Input
+int lightPin = 1;
 int btnPin = 2;
 int tempPin = 2;
-int lightPin = 1;
 int touchPin = 4;
 
 int btnState = 0;
@@ -30,22 +34,36 @@ int touchState = 0;
 
 char buffer [50];
 
+volatile int rx_state = LOW;
+volatile int tx_state = LOW;
+
 Messenger message = Messenger();
 
 // Create the callback function
 
 void setup()  {
   // nothing happens in setup
-  pinMode(digPin, OUTPUT);
+  pinMode(infoPin, OUTPUT);
   pinMode(relPin, OUTPUT);
   pinMode(ledPin, OUTPUT);
   pinMode(btnPin, INPUT);
   // pinMode(touchPin, INPUT);
   // testFalse();
 
+  attachInterrupt(0, btnLed, CHANGE);
   Serial.begin(115200);
   //Serial.begin(9600);
   message.attach(messageReady);
+}
+
+void btnLed() {
+  touchState = digitalRead(btnPin);
+  if(touchState == 1) {
+    digitalWrite(infoPin, HIGH);
+  } else {
+    digitalWrite(infoPin, LOW);
+  }
+
 }
 
 void messageReady() {
@@ -63,12 +81,12 @@ void messageReady() {
 
 void loop()  {
 
-  while ( Serial.available() )  message.process(Serial.read());
-
+  // noInterrupts();
+  //  interrupts();
   if (millis() % (3 * sec) == 0) {
-    touchState = digitalRead(touchPin);
-    sprintf(buffer, "C1:%d,LIGHT:%d,TEMP:%d",
-            analogRead(touchPin), // digitalRead(touchPin),
+    sprintf(buffer, "C1:%d,C2:%d,LIGHT:%d,TEMP:%d",
+            digitalRead(btnPin),
+            analogRead(touchPin),
             analogRead(lightPin),
             analogRead(tempPin));
     Serial.println(buffer);
@@ -86,4 +104,6 @@ void loop()  {
     // }
 
   }
+  while ( Serial.available() )  message.process(Serial.read());
+
 }

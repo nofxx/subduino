@@ -3,6 +3,7 @@ require 'eventmachine'
 require 'redis'
 require 'stringio'
 require 'readline'
+require 'logger'
 
 def halt!
   puts "Closing server"
@@ -15,68 +16,84 @@ end
 trap(:TERM) { halt! }
 trap(:INT)  { halt! }
 
+LOG = Logger.new("out.log")
 BAUDS = 115200
 #BAUDS = 9600
 DATA_BITS = 8
 DATA_STOP = 1
 parity = SerialPort::NONE
 
-@redis = Redis.new(:timeout => 0)
-@sp = SerialPort.new("/dev/ttyUSB0", BAUDS) #, DATA_BITS, DATA_STOP, parity)
-@q = Queue.new
-
-Thread.new do
-  loop do
-    while data = @sp.gets
-      if data =~ /:/
-        print "[COMM] #{data.sub(/\n|\r/, '')}"
-        data.split(",").each do |d|
-          comm, value = d.split(":")
-          case comm
-          when "TEMP" then  puts "#{value.to_i * 0.03} C"
-          when "LIGHT" then
-            puts "#{value.to_i * 2} Lux"
-          else
-            puts "#{comm}: #{value}"
-          end
-        end
-      else
-        puts "[ARDUINO] #{d}"
-      end
-    end
-  end
+def log(txt)
+  LOG.info txt
 end
 
 EM.run do
+  @redis = Redis.new(:timeout => 0)
+  @sp = SerialPort.new("/dev/ttyUSB0", BAUDS) #, DATA_BITS, DATA_STOP, parity)
+  @qi = Queue.new
+  @qo = Queue.new
 
-  puts "Starting USB Connect..."
-  puts @sp.modem_params
-  puts @sp.get_modem_params
-  puts
+  log "Starting USB Connect..."
+  log @sp.modem_params
+  log @sp.get_modem_params
 
-  Thread.new do
+  #
+  # Read I/O
+  #
+  EM.defer do
+    loop do
+      while data = @sp.gets
+        if data =~ /:/
+          #  log "[COMM] #{data.sub(/\n|\r/, '')}"
+          log "Reading --------------- #{Time.now.to_i}"
+          data.split(",").each do |d|
+            comm, value = d.split(":")
+            case comm
+            when "TEMP" then  log "%0.2f C" % (value.to_i * 0.03)
+            when "LIGHT" then
+              log "#{value.to_i * 2} Lux"
+            else
+              log "#{comm}: #{value}"
+            end
+          end
+        else
+          log "[ARDUINO] #{d}"
+        end
+      end
+    end
+  end
+
+  #
+  # Read PubSub
+  #
+  EM.defer do
     @redis.subscribe('ard') do |on|
-      on.subscribe {|klass, num_subs| puts "Subscribed to #{klass} (#{num_subs} subscriptions)" }
+      on.subscribe {|klass, num_subs| log "Subscribed to #{klass} (#{num_subs} subscriptions)" }
       on.message do |klass, msg|
-        puts "[SUB] #{msg}"
-        @q << msg
+        log "[SUB] #{msg}"
+        @qi << msg
         if msg == 'exit'
           @redis.unsubscribe
         end
       end
-      on.unsubscribe {|klass, num_subs| puts "Unsubscribed to #{klass} (#{num_subs} subscriptions)" }
+      on.unsubscribe {|klass, num_subs| log "Unsubscribed to #{klass} (#{num_subs} subscriptions)" }
     end
   end
 
+  #
+  # Write I/O/Pubsub
+  #
   loop do
-    while @q.size > 0
-      puts @q.size
-      tx = @q.pop
-      puts @q.size
-      puts "WRITING => #{tx}"
+    if @qi.size > 0
+      tx = @qi.pop
+      log "[QUEUE IN] #{@qo.size} -> #{tx}"
       txt = tx.sub("\n", "\r")
       txt += "\r" unless txt =~ /\\r/
       @sp.write(txt)
+    end
+    if @qo.size > 0
+      log "[QUEUE OUT] #{@qo.size}"
+      # publish pubsub
     end
   end
 
@@ -95,5 +112,6 @@ EM.run do
   @sp.close
 
 
-end
+  # end
 
+end
