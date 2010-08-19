@@ -13,7 +13,7 @@ require 'logger'
 #   exit
 # end
 
-Thread.current.abort_on_exception = true
+Thread.current.abort_on_exception = false
 
 # trap(:TERM) { halt! }
 # trap(:INT)  { halt! }
@@ -25,45 +25,62 @@ DATA_BITS = 8
 DATA_STOP = 1
 parity = SerialPort::NONE
 
-def log(txt)
-  LOG.info txt
+def log(txt, type="info")
+  LOG.send(type, txt)
 end
 
-#EM.run do
-  @redis = Redis.new(:timeout => 0)
-  @sp = SerialPort.new("/dev/ttyUSB0", BAUDS) #, DATA_BITS, DATA_STOP, parity)
-  @qi = Queue.new
-  @qo = Queue.new
-  log "[USB] Starting USB Connect..." + @sp.get_modem_params.map { |k,v| "#{k}: #{v}" }.join(" ")
+@qi, @qo = Queue.new, Queue.new
+@redis = Redis.new(:timeout => 0)
+@sp = SerialPort.new("/dev/ttyUSB0", BAUDS) #, DATA_BITS, DATA_STOP, parity)
+# @sp.read_timeout = 10;# @sp.write_timeout = 10
 
-  #
-  # Read I/O
-  #
-  Thread.new do
-    loop do
-      while data = @sp.gets
-        if data =~ /:/
-          #  log "[COMM] #{data.sub(/\n|\r/, '')}"
-          log "[INPUT] --------------- #{Time.now.to_i}"
-          data.split(",").each do |d|
-            comm, value = d.split(":")
-            case comm
-            when "TEMP" then  log "%0.2f C" % (value.to_i * 0.03)
-            when "LIGHT" then
-              log "#{value.to_i * 2} Lux"
-            else
-              log "#{comm}: #{value}"
-            end
-          end
+
+log "[USB] Starting USB Connect..." + @sp.get_modem_params.map { |k,v| "#{k}: #{v}" }.join(" ")
+log "[USB] Read Timeout #{@sp.read_timeout}" # {@sp.write_timeout}"
+
+#
+# Read I/O
+#
+Thread.new do
+  Thread.current.abort_on_exception = false
+  icache = []
+
+  loop do
+    begin
+      if char = @sp.getc
+
+        if char !~ /\n|\r/
+          icache << char
+         # p icache
         else
-          log "[ARDUINO] #{d}"
+          data = icache.join(""); icache = []
+          if data =~ /:/
+            #  log "[COMM] #{data.sub(/\n|\r/, '')}"
+            read = []
+            log "[INPUT] --------------- #{Time.now.to_i}"
+            data.split(",").each do |d|
+              comm, value = d.split(":")
+              read << case comm
+              when "TEMP"  then  "%0.2f C" % (value.to_i * 0.04)
+              when "LIGHT" then  "#{value.to_i * 2} Lux"
+              else
+                 "#{comm}: #{value}"
+              end
+            end
+            log "[SENSOR] " + read.join(", ")
+          else
+            log "[INPUT] Done."
+          end
         end
       end
+    rescue => e
+      puts "ERRRRR #{e}"
     end
   end
+end
 
-  #
-  # Read PubSub
+#
+# Read PubSub
   #
   #EM.defer do
   Thread.new do

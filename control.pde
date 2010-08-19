@@ -86,6 +86,13 @@ void loop()  {
 
   // noInterrupts();
   //  interrupts();
+  if (millis() % (300 * sec) == 0) {
+    digitalWrite(ledPin, HIGH);  // turn the ledPin on
+    delay(100);                  // stop the program for some time
+    digitalWrite(ledPin, LOW);   // turn the ledPin off
+    delay(100);                  // stop the program for some time
+  }
+
   if (millis() % (3 * sec) == 0) {
     sprintf(buffer, "C0:%d,C1:%d,C2:%d,LIGHT:%d,TEMP:%d",
             analogRead(knobPin),
@@ -96,10 +103,6 @@ void loop()  {
     Serial.println(buffer);
     //Serial.println(touchState);
     // lightVal = buffer;
-    digitalWrite(ledPin, HIGH);  // turn the ledPin on
-    delay(100);                  // stop the program for some time
-    digitalWrite(ledPin, LOW);   // turn the ledPin off
-    delay(100);                  // stop the program for some time
 
     // if (lightVal > 200) {
     //   analogWrite(relPin, 0);
