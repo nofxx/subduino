@@ -57,11 +57,12 @@ void setup()  {
 }
 
 void btnLed() {
-  touchState = digitalRead(btnPin);
-  if(touchState == 1) {
+  if(digitalRead(btnPin) == 1) {
     digitalWrite(infoPin, HIGH);
+    analogWrite(relPin, 250);
   } else {
     digitalWrite(infoPin, LOW);
+    analogWrite(relPin, LOW);
   }
 
 }
@@ -93,9 +94,9 @@ void loop()  {
     //Serial.println(touchState);
     // lightVal = buffer;
     digitalWrite(ledPin, HIGH);  // turn the ledPin on
-    delay(1000);                  // stop the program for some time
+    delay(100);                  // stop the program for some time
     digitalWrite(ledPin, LOW);   // turn the ledPin off
-    delay(1000);                  // stop the program for some time
+    delay(100);                  // stop the program for some time
 
     // if (lightVal > 200) {
     //   analogWrite(relPin, 0);
