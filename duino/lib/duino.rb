@@ -1,13 +1,18 @@
+
 class Duino
 
   def initialize(config)
     @config = config
+    @redis = Redis.new(:timeout => 0)
+
     # setup
     # ping
   end
 
-  def switch(comm, pin)
-    puts "[OUT] #{comm} #{pin}"
+  def switch(pins, comm)
+    comm = Message.new(comm =~ /start/).txt
+    puts "[OUT] #{pins} #{comm}"
+    command(comm)
   end
 
   # ping server to ensure that it is responsive
@@ -50,15 +55,20 @@ class Duino
     []
   end
 
-private
+  private
+
+  def command(line)
+    @redis.publish('ard', line) unless line.empty?
+  end
+
 
   def method_missing(meth,*args)
     if %w{groups status log quit terminate}.include?(meth.to_s)
       ping
       send("#{meth}_command")
-    elsif %w{start stop restart unmonitor monitor}.include?(meth.to_s)
-      ping
-      lifecycle_command(args.first, meth.to_s)
+    # elsif %w{start stop restart unmonitor monitor}.include?(meth.to_s)
+    #   ping
+    #   lifecycle_command(args.first, meth.to_s)
     else
       raise NoMethodError
     end
@@ -102,30 +112,30 @@ private
 
   #TODO
   def log_command(name, sample=false)
-    begin
-      Signal.trap('INT') { exit }
-    #  name = @args[1]
+    # begin
+    #   Signal.trap('INT') { exit }
+    # #  name = @args[1]
 
-      unless name
-        puts "You must specify a Task or Group name"
-        exit!
-      end
+    #   unless name
+    #     puts "You must specify a Task or Group name"
+    #     exit!
+    #   end
 
-      t = Time.at(0)
-      if sample
-        @server.running_log(name, t)
-      else
-        loop do
-          @server.running_log(name, t)
-          t = Time.now
-          sleep 1
-        end
-      end
-    rescue God::NoSuchWatchError
-      puts "No such watch"
-    rescue DRb::DRbConnError
-      puts "The server went away"
-    end
+    #   t = Time.at(0)
+    #   if sample
+    #     @server.running_log(name, t)
+    #   else
+    #     loop do
+    #       @server.running_log(name, t)
+    #       t = Time.now
+    #       sleep 1
+    #     end
+    #   end
+    # rescue God::NoSuchWatchError
+    #   puts "No such watch"
+    # rescue DRb::DRbConnError
+    #   puts "The server went away"
+    # end
   end
 
   def quit_command
@@ -164,3 +174,14 @@ private
   end
 
 end
+
+
+# def halt!
+#   puts "Closing server"
+#   @redis.quit
+#   puts "..."
+#   exit
+# end
+
+# trap(:TERM) { halt! }
+# trap(:INT)  { halt! }

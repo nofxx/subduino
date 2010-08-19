@@ -1,7 +1,11 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__))) #, '..', 'lib'))
+
 require 'rubygems'
 require 'sinatra'
+require 'eventmachine'
+require 'readline'
+require 'redis'
 require 'stringio'
 require 'yaml'
 require 'haml'
@@ -22,6 +26,8 @@ end
 DUINO = Duino.new(config)
 
 # Require app
+require "messenger"
+include Messenger
 require "app"
 
 Sinatra::Application.public = File.dirname(__FILE__) + "/../public"

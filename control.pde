@@ -16,8 +16,12 @@
 int ledPin = 6;
 int relPin = 3;
 int btnPin = 2;
+int tempPin = 2;
+int lightPin = 1;
 
 int btnState = 0;
+int tempVal  = 0;
+int lightVal  = 0;
 
 Messenger message = Messenger();
 
@@ -55,5 +59,21 @@ void setup()  {
 void loop()  {
 
   while ( Serial.available() )  message.process(Serial.read () );
+
+  tempVal = analogRead(tempPin);
+  lightVal = analogRead(lightPin);
+  digitalWrite(ledPin, HIGH);  // turn the ledPin on
+  delay(1000);                  // stop the program for some time
+  digitalWrite(ledPin, LOW);   // turn the ledPin off
+  delay(1000);                  // stop the program for some time
+  Serial.print("TEMP:");
+  Serial.println(tempVal);
+  if (lightVal > 200) {
+    analogWrite(relPin, 0);
+  } else {
+    analogWrite(relPin, 250);
+  }
+  Serial.print("LIGHT:");
+  Serial.println(lightVal);
 
 }

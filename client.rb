@@ -28,8 +28,14 @@ parity = SerialPort::NONE
 Thread.new do
   loop do
     while data = @sp.gets
-      if data =~ /^x/
-        puts "[COMM] #{data}"
+      if data =~ /:/
+        print "[COMM] #{data.sub(/\n|\r/, '')}"
+        comm, value = data.split(":")
+        case comm
+        when "TEMP" then  puts "#{value.to_i * 0.03} C"
+        when "LIGHT" then
+          puts "#{value.to_i * 2} Lux"
+        end
       else
         puts "[ARDUINO] #{data}"
       end
