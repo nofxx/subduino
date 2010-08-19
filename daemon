@@ -1,21 +1,22 @@
 #!/usr/bin/env ruby
 require 'serialport'
-require 'eventmachine'
+#require 'eventmachine'
 require 'redis'
 require 'stringio'
 require 'readline'
 require 'logger'
 
-def halt!
-  puts "Closing server"
-  @redis.quit
-  puts "..."
-  exit
-end
+# def halt!
+#   puts "Closing server"
+#   @redis.quit
+#   puts "..."
+#   exit
+# end
 
+Thread.current.abort_on_exception = true
 
-trap(:TERM) { halt! }
-trap(:INT)  { halt! }
+# trap(:TERM) { halt! }
+# trap(:INT)  { halt! }
 
 LOG = Logger.new("out.log")
 BAUDS = 115200
@@ -28,7 +29,7 @@ def log(txt)
   LOG.info txt
 end
 
-EM.run do
+#EM.run do
   @redis = Redis.new(:timeout => 0)
   @sp = SerialPort.new("/dev/ttyUSB0", BAUDS) #, DATA_BITS, DATA_STOP, parity)
   @qi = Queue.new
@@ -38,7 +39,7 @@ EM.run do
   #
   # Read I/O
   #
-  EM.defer do
+  Thread.new do
     loop do
       while data = @sp.gets
         if data =~ /:/
@@ -64,7 +65,8 @@ EM.run do
   #
   # Read PubSub
   #
-  EM.defer do
+  #EM.defer do
+  Thread.new do
     @redis.subscribe('ard') do |on|
       on.subscribe {|klass, num_subs| log "[PubSub] Subscribed to #{klass} (#{num_subs} subscriptions)" }
       on.message do |klass, msg|
@@ -112,4 +114,4 @@ EM.run do
 
   # end
 
-end
+#end
