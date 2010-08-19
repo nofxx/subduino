@@ -15,14 +15,14 @@ end
 trap(:TERM) { halt! }
 trap(:INT)  { halt! }
 
-#BAUDS = 115200
+BAUDS = 115200
 #BAUDS = 9600
 DATA_BITS = 8
 DATA_STOP = 1
 parity = SerialPort::NONE
 
 @redis = Redis.new(:timeout => 0)
-@sp = SerialPort.new("/dev/ttyUSB0")#, BAUDS) #, DATA_BITS, DATA_STOP, parity)
+@sp = SerialPort.new("/dev/ttyUSB0", BAUDS) #, DATA_BITS, DATA_STOP, parity)
 @q = Queue.new
 
 Thread.new do
@@ -30,14 +30,18 @@ Thread.new do
     while data = @sp.gets
       if data =~ /:/
         print "[COMM] #{data.sub(/\n|\r/, '')}"
-        comm, value = data.split(":")
-        case comm
-        when "TEMP" then  puts "#{value.to_i * 0.03} C"
-        when "LIGHT" then
-          puts "#{value.to_i * 2} Lux"
+        data.split(",").each do |d|
+          comm, value = d.split(":")
+          case comm
+          when "TEMP" then  puts "#{value.to_i * 0.03} C"
+          when "LIGHT" then
+            puts "#{value.to_i * 2} Lux"
+          else
+            puts "#{comm}: #{value}"
+          end
         end
       else
-        puts "[ARDUINO] #{data}"
+        puts "[ARDUINO] #{d}"
       end
     end
   end
