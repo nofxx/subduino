@@ -4,10 +4,10 @@ module Subduino
     def self.read
       Thread.new do
         begin
-          Subduino.redis.subscribe('ard') do |on|
+          Subduino.redis.subscribe('subduin') do |on|
             on.subscribe {|klass, num_subs| Log.info "[PubSub] Subscribed to #{klass} (#{num_subs} subscriptions)" }
             on.message do |klass, msg|
-              Log.info "[PubSub] #{msg}"
+              Log.info "[PubSub] #{klass} - #{msg}"
               IO.write msg
               # @redis.unsubscribe if msg == 'exit'
             end
@@ -21,7 +21,7 @@ module Subduino
     end
 
     def self.write(msg)
-      Subduino.redis.publish('ard', msg)
+      Subduino.redis.publish('subdout', msg)
     end
 
   end

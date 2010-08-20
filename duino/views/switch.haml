@@ -35,6 +35,8 @@
       Start #{" All" if @child}
     %a.yellowButton{:onclick => "submitCommand('stop', '#{@watch}')"}
       Stop #{" All" if @child}
+  %a.greenButton{:onclick => "submitCommand('door', '#{@watch}')"}
+    Door #{" All" if @child}
   %a.redButton{:onclick => "submitCommand('restart', '#{@watch}')"}
     Restart #{" All" if @child}
   #results

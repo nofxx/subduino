@@ -58,7 +58,7 @@ class Duino
   private
 
   def command(line)
-    @redis.publish('ard', line) unless line.empty?
+    @redis.publish('subduin', line) unless line.empty?
   end
 
 
