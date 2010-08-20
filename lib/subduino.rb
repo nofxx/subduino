@@ -12,6 +12,7 @@ require 'redis'
 
 require 'subduino/io'
 require 'subduino/ps'
+require 'subduino/parse'
 require 'subduino/store'
 require 'subduino/arduino'
 

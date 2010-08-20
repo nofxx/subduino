@@ -1,6 +1,7 @@
 !!! Transitional
 %head
   %title= @title
+  %meta{ :content => "text/html;charset=UTF-8", "http-equiv" => "content-type" }/
   %meta{:content => "width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;", :name => "viewport"}/
   %style{:media => "screen", :type => "text/css"} @import "/iui/iuix.css";
   %style{:media => "screen", :type => "text/css"} @import "/app.css";
@@ -16,6 +17,7 @@
     %a#backButton.button{:href => "#"}
     %a.button{:href => "/", :target => "_self"} Refresh
   %ul#home{:selected => "true", :title => @title}
+    =# @sensors
     - unless @sensors.empty?
       %li.group Sensors
       - @sensors.each do |name, val|

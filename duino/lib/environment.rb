@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__))) #, '..', 'lib'))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__)))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', 'lib'))
 
 require 'rubygems'
 require 'sinatra'
@@ -11,6 +12,7 @@ require 'yaml'
 require 'haml'
 require 'optparse'
 require 'duino'
+require 'subduino/parse'
 
 config = {
   'username' =>  nil,

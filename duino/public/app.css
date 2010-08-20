@@ -56,9 +56,9 @@ li img {
   margin:4px 8px 0px 0px;
 }
 
-.tiny {
-  font-size: 0.8em;
-}
+.pico {font-size: 0.6em; }
+.tiny {font-size: 0.8em; }
+  li.tiny img { margin-top: 0px; }
 
 .gray { color: #aaa; }
 

@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 
 class Duino
-  Sensors = [:temp, :lux]
+  Sensors = { :temp => "Temp", :lux => "Lux" }
 
   def initialize(config)
     @config = config
@@ -11,9 +12,14 @@ class Duino
   end
 
   def sensors
-    Sensors.map do |s|
-      val = @redis.get(s) rescue "-"
-      "#{s}: #{val}"
+    Sensors.reduce({}) do |h, s|
+      val = @redis.get(s[0]) rescue nil
+      next unless val
+      info = "#{s[1]} (#{val}Ω)"
+      val = Subduino::Parse.work(s[1], val).to_s
+      # if debug...
+      h.merge!({ info => val })
+      h
     end
   end
 
