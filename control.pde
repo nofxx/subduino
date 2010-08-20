@@ -16,21 +16,22 @@
 #define day  86400000
 
 #define endPin 12
-#define infoPin 13    // LED connected to digital pin 13
 
 // Output
 int rxPin = 0;
 int txPin = 1;
 int relPin = 3;
 int ledPin = 6;
+int infoPin = 13;
+
 // Input
 int knobPin  = 0;
 int lightPin = 1;
 int tempPin  = 2;
-int knockPin = 5;
+int doorPin  = 4;
+int soundPin = 5;
 // Digital
 int btnPin = 2;
-int touchPin = 4;
 
 int btnState = 0;
 int touchState = 0;
@@ -49,6 +50,7 @@ void setup()  {
   pinMode(infoPin, OUTPUT);
   pinMode(relPin, OUTPUT);
   pinMode(ledPin, OUTPUT);
+
   pinMode(btnPin, INPUT);
   // pinMode(touchPin, INPUT);
   // testFalse();
@@ -96,10 +98,10 @@ void loop()  {
 
   if (millis() % (3 * sec) == 0) {
     sprintf(buffer, "A0:%d,A1:%d,Knob:%d,Sound:%d,Light:%d,Temp:%d",
-            digitalRead(btnPin),   // C0
-            analogRead(touchPin),  // C2
+            digitalRead(btnPin),   // A0
+            analogRead(doorPin),   // A1
             analogRead(knobPin),   // Knob
-            analogRead(knockPin),  // Sound
+            analogRead(soundPin),  // Sound
             analogRead(lightPin),  // Light
             analogRead(tempPin));  // Temp
     Serial.println(buffer);
