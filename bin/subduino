@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
-
-require File.dirname(__FILE__) + '/../lib/environment'
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+require 'rubygems'
+require 'optparse'
+require 'subduino'
 
 OptionParser.new { |op|
   op.on('-e env')    { |val| set :environment, val.to_sym }
@@ -8,4 +10,17 @@ OptionParser.new { |op|
   op.on('-p port')   { |val| set :port, val.to_i }
 }.parse!(ARGV.dup)
 
-set :run, true
+# set :run, true
+
+def halt!
+  puts "Closing daemon..."
+  @redis.quit
+  @sp.close
+  puts "OK"
+  exit 0
+end
+trap(:TERM) { halt! }
+trap(:INT)  { halt! }
+
+
+Subduino.start
