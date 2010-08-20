@@ -24,9 +24,10 @@ int txPin = 1;
 int relPin = 3;
 int ledPin = 6;
 // Input
-int knobPin = 0;
+int knobPin  = 0;
 int lightPin = 1;
-int tempPin = 2;
+int tempPin  = 2;
+int knockPin = 5;
 // Digital
 int btnPin = 2;
 int touchPin = 4;
@@ -94,21 +95,22 @@ void loop()  {
   }
 
   if (millis() % (3 * sec) == 0) {
-    sprintf(buffer, "C0:%d,C1:%d,C2:%d,LIGHT:%d,TEMP:%d",
-            analogRead(knobPin),
-            digitalRead(btnPin),
-            analogRead(touchPin),
-            analogRead(lightPin),
-            analogRead(tempPin));
+    sprintf(buffer, "A0:%d,A1:%d,Knob:%d,Sound:%d,Light:%d,Temp:%d",
+            digitalRead(btnPin),   // C0
+            analogRead(touchPin),  // C2
+            analogRead(knobPin),   // Knob
+            analogRead(knockPin),  // Sound
+            analogRead(lightPin),  // Light
+            analogRead(tempPin));  // Temp
     Serial.println(buffer);
     //Serial.println(touchState);
     // lightVal = buffer;
 
-    // if (lightVal > 200) {
-    //   analogWrite(relPin, 0);
-    // } else {
-    //   analogWrite(relPin, 250);
-    // }
+    if (analogRead(lightPin) > 200) {
+      analogWrite(relPin, 0);
+    } else {
+      analogWrite(relPin, 250);
+    }
 
   }
   while ( Serial.available() )  message.process(Serial.read());

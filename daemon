@@ -34,7 +34,6 @@ end
 @sp = SerialPort.new("/dev/ttyUSB0", BAUDS) #, DATA_BITS, DATA_STOP, parity)
 # @sp.read_timeout = 10;# @sp.write_timeout = 10
 
-
 log "[USB] Starting USB Connect..." + @sp.get_modem_params.map { |k,v| "#{k}: #{v}" }.join(" ")
 log "[USB] Read Timeout #{@sp.read_timeout}" # {@sp.write_timeout}"
 
@@ -47,24 +46,21 @@ Thread.new do
 
   loop do
     begin
-      if char = @sp.getc
-
+      if char = @sp.get
         if char !~ /\n|\r/
           icache << char
-         # p icache
         else
           data = icache.join(""); icache = []
           if data =~ /:/
-            #  log "[COMM] #{data.sub(/\n|\r/, '')}"
             read = []
             log "[INPUT] --------------- #{Time.now.to_i}"
             data.split(",").each do |d|
               comm, value = d.split(":")
               read << case comm
-              when "TEMP"  then  "%0.2f C" % (value.to_i * 0.04)
-              when "LIGHT" then  "#{value.to_i * 2} Lux"
+              when "Temp"  then  "%0.2f C" % (value.to_i * 0.04)
+              when "Light" then  "#{value.to_i * 2} Lux"
               else
-                 "#{comm}: #{value}"
+                "#{comm}: #{value}"
               end
             end
             log "[SENSOR] " + read.join(", ")
@@ -74,22 +70,22 @@ Thread.new do
         end
       end
     rescue => e
-      puts "ERRRRR #{e}"
+      Log.error "[USB] Error #{e} #{e.backtrace}"
     end
   end
 end
 
 #
 # Read PubSub
-  #
-  #EM.defer do
-  Thread.new do
-    @redis.subscribe('ard') do |on|
-      on.subscribe {|klass, num_subs| log "[PubSub] Subscribed to #{klass} (#{num_subs} subscriptions)" }
-      on.message do |klass, msg|
-        log "[SUB] #{msg}"
-        @qi << msg
-        if msg == 'exit'
+#
+#EM.defer do
+Thread.new do
+  @redis.subscribe('ard') do |on|
+    on.subscribe {|klass, num_subs| log "[PubSub] Subscribed to #{klass} (#{num_subs} subscriptions)" }
+    on.message do |klass, msg|
+      log "[SUB] #{msg}"
+      @qi << msg
+      if msg == 'exit'
           @redis.unsubscribe
         end
       end
