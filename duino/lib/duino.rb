@@ -7,8 +7,9 @@ class Duino
     @redis = Redis.new(:timeout => 0)
   end
 
-  def sensors
-    Sensors.reduce({}) do |h, s|
+  def sensors(one=nil)
+    s = one ? Sensors.select { |k,v| k.to_s == one.to_s } : Sensors
+    s.reduce({}) do |h, s|
       val = @redis.get(s[0]) rescue nil
       next unless val
       k, v = *s
@@ -29,6 +30,12 @@ class Duino
     comm = Message.new(comm =~ /start/).txt
     puts "[OUT] #{pins} #{comm}"
     command(comm)
+  end
+
+  def log(n)
+    key = n + "_log"
+    size = @redis.llen key
+    @redis.lrange key, size - 100, size
   end
 
   # ping server to ensure that it is responsive
@@ -70,6 +77,9 @@ class Duino
     #   [:mem, mem.gsub("Mem:  ", "").gsub(/(\d*k)/) { ($1.to_i / 1000).to_s }]]
     []
   end
+  def status
+    status_command
+  end
 
   private
 
@@ -78,17 +88,17 @@ class Duino
   end
 
 
-  def method_missing(meth,*args)
-    if %w{groups status log quit terminate}.include?(meth.to_s)
-      ping
-      send("#{meth}_command")
-    # elsif %w{start stop restart unmonitor monitor}.include?(meth.to_s)
-    #   ping
-    #   lifecycle_command(args.first, meth.to_s)
-    else
-      raise NoMethodError
-    end
-  end
+  # def method_missing(meth,*args)
+  #   if %w{groups status log quit terminate}.include?(meth.to_s)
+  #     ping
+  #     send("#{meth}_command")
+  #   # elsif %w{start stop restart unmonitor monitor}.include?(meth.to_s)
+  #   #   ping
+  #   #   lifecycle_command(args.first, meth.to_s)
+  #   else
+  #     raise NoMethodError, meth
+  #   end
+  # end
 
   def groups_command
     groups = []

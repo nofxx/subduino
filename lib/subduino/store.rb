@@ -20,12 +20,17 @@ module Subduino
 
       def write(key, val=nil)
         if val
-          redis.set key, val
+          add_to_store key, val
         else
           key.each do |k,v|
-            redis.set k, v
+            add_to_store k, v
           end
         end
+      end
+
+      def add_to_store(k, v)
+        redis.set k, v
+        redis.rpush "#{k}_log", v
       end
 
 

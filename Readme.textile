@@ -1,33 +1,26 @@
-h1. Duino
+h1. Subduino
 
-Arduino code
+Talks to arduino using cool stuff.
+
+http://github.com/nofxx/subduino
 
 
 h3. Requirements
 
 * "Arduino":http://arduino.cc
+* "serialport":http://github.com/hparra/ruby-serialport
+* "redis":http://github.com/ezmobius/redis-rb
 
 
 h2. Contributing
 
-duino uses "ditz":http://ditz.rubyforge.org for issue tracking. Fork
-duino, clone your copy and then run:
+Fork/work/push
 
-@ditz todo@
-
-For more details on a specific issue:
-
-@ditz show duino-1@
-
-Make your changes that fix a bug, then resolve it.
-
-@ditz close duino-1@
-
-Commit, push your changes to GitHub, then send a pull request!
 
 h3. Author
 
 nofxx
+
 
 h3. License
 

@@ -1,3 +1,17 @@
+
+helpers do
+
+  def get_layout
+    return false if request.env['HTTP_XHR']
+    case request.env['HTTP_USER_AGENT']
+    when /iPhone|iPod/ then :mobile
+    when /Android|Nokia/ then :mobile
+    else true
+    end
+  end
+
+end # helpers
+
 before do
   unless (DUINO_CONFIG['username'].nil? && DUINO_CONFIG['password'].nil?) || self.request.path_info == '/heartbeat'
     use Rack::Auth::Basic do |user, pass|
@@ -6,6 +20,12 @@ before do
   end
   # DUINO.ping
 end
+
+
+
+set :haml, {:format => :html5 }
+
+
 
 
 get '/' do
@@ -21,6 +41,7 @@ get '/' do
   @footer = "Duino v0.0.1 - #{@host}"
   show(:index, @host)
 end
+
 
 get '/o' do
   @commands = %w{ false false }
@@ -60,13 +81,16 @@ get '/w/:watch/:command' do
   show(:command, "#{@command}ing #{@watch}")
 end
 
-get '/g/:group' do
-  @watch = @group = params["group"]
-  @child = DUINO.status.keys.each.select { |k| DUINO.status[k][:group] == @group } #.select { |w| w["group"] = @group }
-  @child.map!{ |c| [c, DUINO.status[c][:state]]}
-  @status = nil
-  @commands = Duino.possible_statuses(@status)
-  show(:watch, "#{@group} [group]")
+get '/g/:sensor' do
+  @watch = params["sensor"]
+  @name, @sensor = *DUINO.sensors(@watch).to_a[0]
+  @name = @name.capitalize
+  @log = DUINO.log @watch
+  # @child = DUINO.status.keys.each.select { |k| DUINO.status[k][:sensor] == @sensor } #.select { |w| w["sensor"] = @sensor }
+  # @child.map!{ |c| [c, DUINO.status[c][:state]]}
+  # @status = nil
+  # @commands = Duino.possible_statuses(@status)
+  show(:watch, "#{@name} #{@sensor} [sensor]")
 end
 
 
@@ -74,5 +98,6 @@ private
 
 def show(template, title = 'Duino')
   @title = title
-  haml(template)
+  p request.env['HTTP_XHR']
+  haml(template, :layout => get_layout)
 end
