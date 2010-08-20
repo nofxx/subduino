@@ -16,13 +16,14 @@
     %a#backButton.button{:href => "#"}
     %a.button{:href => "/", :target => "_self"} Refresh
   %ul#home{:selected => "true", :title => @title}
-    - unless true ## @groups.empty?
-      %li.group Groups
-    - @groups.each do |watch|
-      %li{:id => watch}
-        %a{:href => "/g/#{watch}"}
-          %img{:src => "icons/groups.png"}/
-          = watch
+    - unless @sensors.empty?
+      %li.group Sensors
+      - @sensors.each do |name, val|
+        %li{:id => name}
+          %a{:href => "/g/#{name}"}
+            %img{:src => "icons/groups.png"}/
+            = val
+            %span.tiny.gray= name
     - @watches.each do |state, watches|
       %li.group= state.capitalize
       - for watch in watches.sort
@@ -30,11 +31,15 @@
           %a{:href => "/w/#{watch}"}
             %img{:src => "icons/#{@statuses[watch][:state]}.png"}/
             = watch
-    %li.group Extras
+    %li.group Control
     %li#god_opts
       %a{:href => "/o"}
-        %img{:src => "icons/monitor.png"}/
-        Switch
+        %img{:src => "icons/start.png"}/
+        Power
+    %li#god_opts
+      %a{:href => "/o"}
+        %img{:src => "icons/dashboard.png"}/
+        Sensors
     %li#top_show
       %a{:href => "/t"}
         %img{:src => "icons/terminal.png"}/

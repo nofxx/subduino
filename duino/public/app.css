@@ -1,3 +1,7 @@
+body {
+  color: #222;
+}
+
 .home_icon_div {
   padding-top: 80px;
   background: transparent url(../icons/big_icon.png) no-repeat scroll center center;
