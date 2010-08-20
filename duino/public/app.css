@@ -3,6 +3,7 @@
   background: transparent url(../icons/big_icon.png) no-repeat scroll center center;
   height: 300px;
 }
+
 .home_icon_txt {
   font-size: 4em;
   font-weight: bold;
@@ -19,7 +20,6 @@
   font-weight: bold;
   color: #eee
 }
-
 
 fieldset > ul {
     padding: 0px 10px;
