@@ -12,6 +12,7 @@ require 'redis'
 
 require 'subduino/io'
 require 'subduino/ps'
+require 'subduino/store'
 require 'subduino/arduino'
 
 Thread.current.abort_on_exception = false
@@ -19,12 +20,10 @@ Thread.current.abort_on_exception = false
 module Subduino
   Log = Logger.new("out.log")
   BAUDS = 115200   #BAUDS = 9600
+  Sensors = [:temp, :lux]
   # DATA_BITS = 8
   # DATA_STOP = 1
 
-  def self.redis
-    @redis ||= Redis.new(:timeout => 0)
-  end
 
   def self.start
     # Start some threads...

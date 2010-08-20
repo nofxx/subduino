@@ -89,7 +89,7 @@ void loop()  {
 
   // noInterrupts();
   //  interrupts();
-  if (millis() % (300 * sec) == 0) {
+  if (millis() % (10 * sec) == 0) {
     digitalWrite(ledPin, HIGH);  // turn the ledPin on
     delay(100);                  // stop the program for some time
     digitalWrite(ledPin, LOW);   // turn the ledPin off
@@ -97,22 +97,22 @@ void loop()  {
   }
 
   if (millis() % (3 * sec) == 0) {
-    sprintf(buffer, "A0:%d,A1:%d,Knob:%d,Sound:%d,Light:%d,Temp:%d",
-            digitalRead(btnPin),   // A0
-            analogRead(doorPin),   // A1
-            analogRead(knobPin),   // Knob
-            analogRead(soundPin),  // Sound
-            analogRead(lightPin),  // Light
-            analogRead(tempPin));  // Temp
+    sprintf(buffer, "i0:%d,i1:%d,knob:%d,sound:%d,lux:%d,temp:%d",
+            digitalRead(btnPin),   // i0
+            analogRead(doorPin),   // i1
+            analogRead(knobPin),   // knob
+            analogRead(soundPin),  // sound
+            analogRead(lightPin),  // light
+            analogRead(tempPin));  // temp
     Serial.println(buffer);
     //Serial.println(touchState);
     // lightVal = buffer;
 
-    if (analogRead(lightPin) > 200) {
-      analogWrite(relPin, 0);
-    } else {
-      analogWrite(relPin, 250);
-    }
+    // if (analogRead(lightPin) > 200) {
+    //   analogWrite(relPin, 0);
+    // } else {
+    //   analogWrite(relPin, 250);
+    // }
 
   }
   while ( Serial.available() )  message.process(Serial.read());

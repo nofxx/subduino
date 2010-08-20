@@ -8,18 +8,31 @@
 module Subduino
   class Store
     class << self
-      
-      def read(key)
+
+      def redis
+        @redis ||= Redis.new(:timeout => 0)
       end
 
-      def write(key, val)
+
+      def read(key)
+        redis.get key
+      end
+
+      def write(key, val=nil)
+        if val
+          redis.set key, val
+        else
+          key.each do |k,v|
+            redis.set k, v
+          end
+        end
       end
 
 
       # def method_missing(*args)
       #   read(args[0])
       # end
-      
+
     end
   end
 end

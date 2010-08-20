@@ -1,5 +1,6 @@
 
 class Duino
+  Sensors = [:temp, :lux]
 
   def initialize(config)
     @config = config
@@ -7,6 +8,13 @@ class Duino
 
     # setup
     # ping
+  end
+
+  def sensors
+    Sensors.map do |s|
+      val = @redis.get(s) rescue "-"
+      "#{s}: #{val}"
+    end
   end
 
   def switch(pins, comm)

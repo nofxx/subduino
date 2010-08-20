@@ -31,12 +31,8 @@ module Subduino
                     Log.info "[IO  RX] --------------- #{Time.now.to_i}"
                     data.split(",").each do |d|
                       comm, value = d.split(":")
-                      read << case comm
-                      when "Temp"  then  "%0.2f C" % (value.to_i * 0.04)
-                      when "Light" then  "#{value.to_i * 2} Lux"
-                      else
-                        "#{comm}: #{value}"
-                      end
+                      Store.write(comm, value)
+                      read << "#{comm}: #{value}"
                     end
                     Log.info "[SENSOR] " + read.join(", ")
                   else
@@ -45,7 +41,8 @@ module Subduino
                 end
               end
             rescue => e
-              Log.error "[USB] Error #{e} #{e.backtrace}"
+              Log.error "[USB] Error #{e}"
+              Log.error e.backtrace.join("\n")
             end
           end
         end

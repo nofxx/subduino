@@ -21,4 +21,12 @@ module Subduino
     end
 
   end
+
+                      #   read << case comm
+                      # when "Temp"  then  "%0.2f C" % (value.to_i * 0.04)
+                      # when "Light" then  "#{value.to_i * 2} Lux"
+                      # else
+                      #   "#{comm}: #{value}"
+                      # end
+
 end

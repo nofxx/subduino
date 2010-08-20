@@ -7,6 +7,7 @@ before do
   # DUINO.ping
 end
 
+
 get '/' do
   @statuses = DUINO.status
   @watches = []
@@ -14,7 +15,7 @@ get '/' do
   #   @watches << watch.to_s
   # end
   # @watches = @watches.group_by { |w| @statuses[w][:state].to_s }
-  @sensors = { "Temp" => 20, "Lux" => 500 } #]DUINO.groups
+  @sensors = DUINO.sensors
   @host = `hostname`
   @stats = Duino.cpu_status
   @footer = "Duino v0.0.1 - #{@host}"
