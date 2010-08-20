@@ -1,24 +1,26 @@
-# -*- coding: utf-8 -*-
 
 class Duino
-  Sensors = { :temp => "Temp", :lux => "Lux" }
+  Sensors = { :i0 => "Bool", :i1 => "Bool", :temp => "Temp", :lux => "Lux", :knob => "Knob" }
 
   def initialize(config)
     @config = config
     @redis = Redis.new(:timeout => 0)
-
-    # setup
-    # ping
   end
 
   def sensors
     Sensors.reduce({}) do |h, s|
       val = @redis.get(s[0]) rescue nil
       next unless val
-      info = "#{s[1]} (#{val}Ω)"
-      val = Subduino::Parse.work(s[1], val).to_s
-      # if debug...
-      h.merge!({ info => val })
+      k, v = *s
+      sensor = Subduino::Parse.work(v, val)
+      # if v == "Bool"
+      #   info = "#{)} (#{val}~)"
+      #   val = k
+      # else
+      #   info = "#{k.capitalize} (#{val}~)"
+      #   val = Subduino::Parse.work(v, val).to_s
+      # end
+      h.merge!({ k => sensor })
       h
     end
   end

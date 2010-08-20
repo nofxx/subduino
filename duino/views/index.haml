@@ -20,12 +20,18 @@
     =# @sensors
     - unless @sensors.empty?
       %li.group Sensors
-      - @sensors.each do |name, val|
+      - @sensors.each do |name, sensor|
         %li{:id => name}
           %a{:href => "/g/#{name}"}
-            %img{:src => "icons/groups.png"}/
-            = val
-            %span.tiny.gray= name
+            - if sensor.digital?
+              %img{:src => "icons/#{sensor.parse}.png"}/
+              = name
+              %span.tiny.gray= sensor
+            - else
+              %img{:src => "icons/groups.png"}/
+              = sensor
+              %span.tiny.gray= name.to_s.capitalize
+            %span.pico.gray (#{sensor.raw}~)
     - @watches.each do |state, watches|
       %li.group= state.capitalize
       - for watch in watches.sort
