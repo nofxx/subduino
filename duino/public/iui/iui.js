@@ -102,6 +102,7 @@ window.iui =
     else
     {
       req.open(method || "GET", href, true);
+      req.setRequestHeader("XHR", true);
       req.send(null);
     }
   },

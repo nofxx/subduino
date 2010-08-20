@@ -24,12 +24,17 @@
     %fieldset
       - ["power", "monitor"].each_with_index do |comm, i|
         //%h1= comm
-        .row
+        .row{:onclick => "submitCommand('start', '#{@watch}')"}
           %label= comm.capitalize
           .toggle{:id => "toggle_#{comm}", :onclick => "submitCommand('#{comm}', '#{@watch}')", :toggled => @commands[i]}
             %span.thumb
             %span.toggleOn ON
             %span.toggleOff OFF
+      - ["power", "monitor"].each_with_index do |comm, i|
+        //%h1= comm
+        .row
+          %label= comm.capitalize
+          %input.button{:type => "submit", :name => comm, :value => comm, :onclick => "sComm('#{comm}');" }
   - else
     %a.greenButton{:onclick => "submitCommand('start', '#{@watch}')"}
       Start #{" All" if @child}
@@ -40,3 +45,9 @@
   %a.redButton{:onclick => "submitCommand('restart', '#{@watch}')"}
     Restart #{" All" if @child}
   #results
+
+:javascript
+  $('.panel').toggle();
+  function sComm(url) {
+  $.get("/w/" + url + "/stop");
+  };

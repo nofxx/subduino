@@ -1,0 +1,33 @@
+.buttons {
+  background-color: #eeeeff;
+  /* border: 2px solid #ddddff */
+  padding: 8px;
+  margin-top: 10px;
+  height: 32px;
+  word-spacing: 10px;
+  text-align: right; }
+
+.button {
+  -moz-border-radius: 5px;
+  background: url("../../images/layout/button-large.png") repeat-x scroll center top transparent;
+  border: 1px solid #999999;
+  color: inherit;
+  margin: 0;
+  overflow: visible;
+  padding: 5px 8px;
+  /* width: 100px */
+  /* border-bottom: 2px solid #bbb */
+  /* border-top: none */
+  /* border-left: none */
+  /* border-right: 2px solid #bbb */
+  /* height: 30px */
+  /* background-color: #fff */
+  color: #444444;
+  font-weight: bold; }
+  .button:hover {
+    cursor: pointer; }
+  .button:active {
+    background: -moz-linear-gradient(center top, #cccccc, white) repeat scroll 0 0 transparent;
+    border: 1px solid #555555;
+    text-shadow: 0 1px 0 #eeeeee;
+    cursor: pointer; }

@@ -109,3 +109,11 @@ li img {
   overflow: auto;
   padding-top: 8px;
 }
+
+
+/* PC */
+
+.right {
+    width: 50%;
+  float: right;
+}

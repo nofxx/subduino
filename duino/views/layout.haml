@@ -1,0 +1,15 @@
+!!! Transitional
+%head
+  %title= @title
+  %meta{ :content => "text/html;charset=UTF-8", "http-equiv" => "content-type" }/
+  %style{:media => "screen", :type => "text/css"} @import "/iui/iuix.css";
+  %style{:media => "screen", :type => "text/css"} @import "/app.css";
+  %style{:media => "screen", :type => "text/css"} @import "/layout.css";
+  /%script{:src => "/app.js", :type => "application/x-javascript"}
+  %script{:src => "/jquery.js", :type => "application/x-javascript"}
+  %script{:src => "/sparkline.js", :type => "application/x-javascript"}
+
+%body
+  .toolbar
+    %h1#pageTitle= @title
+  = yield

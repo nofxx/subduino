@@ -1,0 +1,26 @@
+.panel{:id => "#{@watch}_sensors", :title => @title}
+  - if @sensor
+    %h2= @name
+    %fieldset
+      %div{:align => "center"}
+        %p
+          %b=# @status.to_s.capitalize
+          [#{Time.now.strftime("%H:%m %m/%d")}]
+        #logspark= @log.join(",")
+  - if @log
+    %h2 Log
+    %fieldset
+      %div{:align => "left"}= @log
+  - if @child
+    %h2 Watches
+    %fieldset
+      %ul
+        - for child in @child
+          %li{:id => child[0]}
+            %a{:href => "/w/#{child[0]}"}
+              %img{:src => "icons/#{child[1]}.png"}/
+              = child[0]
+
+:javascript
+  $('.panel').toggle();
+  $('#logspark').sparkline('html', { lineColor: 'green', fillColor: '#aaffaa',  width:'100%', height:'80px' });

@@ -1,0 +1,21 @@
+!!! Transitional
+%head
+  %title= @title
+  %meta{ :content => "text/html;charset=UTF-8", "http-equiv" => "content-type" }/
+  %meta{:content => "width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;", :name => "viewport"}/
+  %style{:media => "screen", :type => "text/css"} @import "/iui/iuix.css";
+  %style{:media => "screen", :type => "text/css"} @import "/app.css";
+  %script{:src => "/app.js", :type => "application/x-javascript"}
+  %script{:src => "/jquery.js", :type => "application/x-javascript"}
+  %script{:src => "/sparklines.js", :type => "application/x-javascript"}
+  %script{:src => "/iui/iui.js", :type => "application/x-javascript"}
+  :javascript
+    iui.animOn = true;
+
+%body
+  .toolbar
+    %h1#pageTitle= @title
+    %a#backButton.button{:href => "#"}
+    %a.button{:href => "/", :target => "_self"} Refresh
+
+  = yield
