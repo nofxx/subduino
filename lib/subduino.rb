@@ -22,6 +22,10 @@ module Subduino
   # DATA_BITS = 8
   # DATA_STOP = 1
 
+  def self.redis
+    @redis ||= Redis.new(:timeout => 0)
+  end
+
   def self.start
     # Start some threads...
     IO.read

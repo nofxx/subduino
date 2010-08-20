@@ -28,7 +28,7 @@ module Subduino
                   data = icache.join(""); icache = []
                   if data =~ /:/
                     read = []
-                    Log.info "[INPUT] --------------- #{Time.now.to_i}"
+                    Log.info "[IO  RX] --------------- #{Time.now.to_i}"
                     data.split(",").each do |d|
                       comm, value = d.split(":")
                       read << case comm
@@ -40,7 +40,7 @@ module Subduino
                     end
                     Log.info "[SENSOR] " + read.join(", ")
                   else
-                    Log.info "[INPUT] Done."
+                    # Log.info "[INPUT] Done."
                   end
                 end
               end
@@ -52,7 +52,7 @@ module Subduino
       end
 
       def write(msg)
-        Log.info "[IO TX] #{msg}"
+        Log.info "[IO  TX] #{msg}"
         txt = msg.sub("\n", "\r")
         txt += "\r" unless txt =~ /\\r/
         sp.write(txt)

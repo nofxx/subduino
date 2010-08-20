@@ -1,14 +1,10 @@
 module Subduino
   class PS
 
-    def self.redis
-      @redis ||= Redis.new(:timeout => 0)
-    end
-
     def self.read
       Thread.new do
         begin
-          redis.subscribe('ard') do |on|
+          Subduino.redis.subscribe('ard') do |on|
             on.subscribe {|klass, num_subs| Log.info "[PubSub] Subscribed to #{klass} (#{num_subs} subscriptions)" }
             on.message do |klass, msg|
               Log.info "[PubSub] #{msg}"
@@ -25,7 +21,7 @@ module Subduino
     end
 
     def self.write(msg)
-      redis.publish('ard', msg)
+      Subduino.redis.publish('ard', msg)
     end
 
   end
