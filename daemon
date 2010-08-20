@@ -46,7 +46,7 @@ Thread.new do
 
   loop do
     begin
-      if char = @sp.get
+      if char = @sp.getc
         if char !~ /\n|\r/
           icache << char
         else
