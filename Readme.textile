@@ -18,6 +18,8 @@ h3. Requirements
 
 h2. Use
 
+<pre><code>
+
     Subduino.start do |reading|
       puts "Received from arduino: #{reading}"
       # Mail.send("foo@bla.com") if reading && reading.digital?
@@ -25,6 +27,8 @@ h2. Use
     end
 
     Subduino.write(TXT)
+
+</pre></code>
 
 
 h2. Contributing
