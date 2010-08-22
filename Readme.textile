@@ -4,6 +4,10 @@ Talks to arduino using cool stuff.
 
 http://github.com/nofxx/subduino
 
+h2. Install
+
+    gem install subduino
+
 
 h3. Requirements
 
@@ -12,9 +16,20 @@ h3. Requirements
 * "redis":http://github.com/ezmobius/redis-rb
 
 
+h2. Use
+
+    Subduino.start do |reading|
+      puts "Received from arduino: #{reading}"
+      # Mail.send("foo@bla.com") if reading && reading.digital?
+      # Postgre.remember(:sensor => reading)
+    end
+
+    Subduino.write(TXT)
+
+
 h2. Contributing
 
-Fork/work/push
+Fork/work/push.
 
 
 h3. Author
