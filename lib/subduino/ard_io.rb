@@ -1,10 +1,14 @@
 module Subduino
 
-  class IO
+  class ArdIO
     class << self
 
+      def find_arduino
+        Dir['/dev/ttyUSB*'].first
+      end
+
       def sp
-        @sp ||= SerialPort.new("/dev/ttyUSB0", BAUDS) #, DATA_BITS, DATA_STOP, parity)
+        @sp ||= SerialPort.new(find_arduino, BAUDS) #, DATA_BITS, DATA_STOP, parity)
         # @sp.read_timeout = 10;# @sp.write_timeout = 10
       end
 

@@ -19,7 +19,7 @@ module Subduino
         @sp.putc char
       end
     end
-
+ 
   end
 
                       #   read << case comm

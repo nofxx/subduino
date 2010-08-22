@@ -10,8 +10,8 @@ require 'readline'
 require 'logger'
 require 'redis'
 
-require 'subduino/io'
-require 'subduino/ps'
+require 'subduino/ard_io'
+require 'subduino/ard_ps'
 require 'subduino/parse'
 require 'subduino/store'
 require 'subduino/arduino'
@@ -29,16 +29,16 @@ module Subduino
 
   def self.start
     # Start some threads...
-    IO.read
-    PS.read
+    ArdIO.read
+    ArdPS.read
 
     # Be a daemon.
     loop do; end
   end
 
   def self.stop
-    IO.stop
-    PS.stop
+    ArdIO.stop
+    ArdPS.stop
   end
 
 end

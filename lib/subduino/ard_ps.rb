@@ -1,5 +1,5 @@
 module Subduino
-  class PS
+  class ArdPS
 
     def self.redis
       @redis ||= Redis.new(:timeout => 0)
