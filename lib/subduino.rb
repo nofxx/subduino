@@ -27,9 +27,9 @@ module Subduino
   # DATA_STOP = 1
 
 
-  def self.start
+  def self.start(&proc)
     # Start some threads...
-    ArdIO.read
+    ArdIO.read &proc
     ArdPS.read
 
     # Be a daemon.

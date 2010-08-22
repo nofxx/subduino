@@ -4,14 +4,12 @@ module Subduino
 
   class Arduino
 
-    def initialize
-      port_str = "/dev/tty.usbserial-A6004bX6" #may be different for you
-      baud_rate = 9600
-      data_bits = 8
-      stop_bits = 1
-      parity = SerialPort::NONE
+    def self.find_usb
+      Dir['/dev/ttyUSB*'].first
+    end
 
-      @sp = SerialPort.new(port_str, baud_rate, data_bits, stop_bits, parity)
+
+    def initialize
     end
 
     def send_to_arduino(string)
@@ -19,7 +17,7 @@ module Subduino
         @sp.putc char
       end
     end
- 
+
   end
 
                       #   read << case comm

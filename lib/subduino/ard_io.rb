@@ -3,16 +3,12 @@ module Subduino
   class ArdIO
     class << self
 
-      def find_arduino
-        Dir['/dev/ttyUSB*'].first
-      end
-
       def sp
-        @sp ||= SerialPort.new(find_arduino, BAUDS) #, DATA_BITS, DATA_STOP, parity)
+        @sp ||= SerialPort.new(Arduino.find_usb, BAUDS) #, DATA_BITS, DATA_STOP, parity)
         # @sp.read_timeout = 10;# @sp.write_timeout = 10
       end
 
-      def read
+      def read(&proc)
         Log.info "[USB] Starting USB Connect..." + sp.get_modem_params.map { |k,v| "#{k}: #{v}" }.join(" ")
         Log.info "[USB] Read Timeout #{sp.read_timeout}" # {sp.write_timeout}"
 
@@ -38,7 +34,9 @@ module Subduino
                       Store.write(comm, value)
                       read << "#{comm}: #{value}"
                     end
-                    Log.info "[SENSOR] " + read.join(", ")
+                    txt = read.join(", ")
+                    proc.call(txt)
+                    Log.info "[SENSOR] #{txt}"
                   else
                     # Log.info "[INPUT] Done."
                   end

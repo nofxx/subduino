@@ -23,4 +23,6 @@ trap(:TERM) { halt! }
 trap(:INT)  { halt! }
 
 
-Subduino.start
+Subduino.start do |read|
+  puts "[IO] #{read}"
+end
