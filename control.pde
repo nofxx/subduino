@@ -21,6 +21,7 @@
 int rxPin = 0;
 int txPin = 1;
 int relPin = 3;
+int motorPin = 10;
 int ledPin = 6;
 int infoPin = 13;
 
@@ -35,6 +36,7 @@ int btnPin = 2;
 
 int btnState = 0;
 int touchState = 0;
+int motorState = 0;
 
 char buffer [50];
 
@@ -49,6 +51,7 @@ void setup()  {
   // nothing happens in setup
   pinMode(infoPin, OUTPUT);
   pinMode(relPin, OUTPUT);
+  pinMode(motorPin, OUTPUT);
   pinMode(ledPin, OUTPUT);
 
   pinMode(btnPin, INPUT);
@@ -65,6 +68,11 @@ void btnLed() {
   if(digitalRead(btnPin) == 1) {
     digitalWrite(infoPin, HIGH);
     analogWrite(relPin, 250);
+    if (motorState != 0) {
+      motorState = 0;
+    } else {
+      motorState = 1;
+    }
   } else {
     digitalWrite(infoPin, LOW);
     analogWrite(relPin, LOW);
@@ -87,6 +95,12 @@ void messageReady() {
 
 void loop()  {
 
+  if (motorState != 0) {
+    analogWrite(motorPin, (analogRead(knobPin)/5));
+  } else {
+    analogWrite(motorPin, 0);
+  }
+
   // noInterrupts();
   //  interrupts();
   if (millis() % (10 * sec) == 0) {
@@ -106,6 +120,15 @@ void loop()  {
             analogRead(tempPin));  // temp
     Serial.println(buffer);
     //Serial.println(touchState);
+    //Serial.print(byte(50));
+    // * Serial.print(78, BYTE) gives "N"
+    // * Serial.print(78, BIN) gives "1001110"
+    // * Serial.print(78, OCT) gives "116"
+    // * Serial.print(78, DEC) gives "78"
+    // * Serial.print(78, HEX) gives "4E"
+    // * Serial.println(1.23456, 0) gives "1"
+    // * Serial.println(1.23456, 2) gives "1.23"
+    // * Serial.println(1.23456, 4) gives "1.2346"
     // lightVal = buffer;
 
     // if (analogRead(lightPin) > 200) {
