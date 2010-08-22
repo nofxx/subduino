@@ -1,6 +1,6 @@
 module Messenger
   class Message
-    PINS = (3..12).to_a
+    PINS = (0..12).to_a
     LOW  = 0
     HIGH = 250
 

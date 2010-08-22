@@ -15,7 +15,7 @@
 #define hour 3600000
 #define day  86400000
 
-#define endPin 12
+#define endPin 13
 
 // Output
 int rxPin = 0;
@@ -66,6 +66,7 @@ void setup()  {
 
 void btnLed() {
   if(digitalRead(btnPin) == 1) {
+    Serial.println("BUTTON");
     digitalWrite(infoPin, HIGH);
     analogWrite(relPin, 250);
     if (motorState != 0) {

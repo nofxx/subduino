@@ -38,6 +38,7 @@ module Subduino
                     proc.call(txt)
                     Log.info "[SENSOR] #{txt}"
                   else
+                    proc.call(data) unless data.empty?
                     # Log.info "[INPUT] Done."
                   end
                 end
