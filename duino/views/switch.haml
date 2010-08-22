@@ -34,7 +34,10 @@
         //%h1= comm
         .row
           %label= comm.capitalize
-          %input.button{:type => "submit", :name => comm, :value => comm, :onclick => "sComm('#{comm}');" }
+          %input.button{:type => "submit", :name => comm, :value => comm, :onclick => "sComm('#{comm}', 'start');" }
+        .row
+          %label= comm.capitalize
+          %input.button{:type => "submit", :name => comm, :value => comm, :onclick => "sComm('#{comm}', 'stop');" }
   - else
     %a.greenButton{:onclick => "submitCommand('start', '#{@watch}')"}
       Start #{" All" if @child}
@@ -48,6 +51,6 @@
 
 :javascript
   $('.panel').toggle();
-  function sComm(url) {
-  $.get("/w/" + url + "/stop");
+  function sComm(url, comm) {
+  $.get("/w/" + url + "/" + comm);
   };
