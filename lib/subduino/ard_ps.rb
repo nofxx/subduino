@@ -12,7 +12,7 @@ module Subduino
             on.subscribe {|klass, num_subs| Log.info "[PubSub] Subscribed to #{klass} (#{num_subs} subscriptions)" }
             on.message do |klass, msg|
               Log.info "[PubSub] #{klass} - #{msg}"
-              IO.write msg
+              ArdIO.write msg
               # @redis.unsubscribe if msg == 'exit'
             end
             on.unsubscribe {|klass, num_subs| Log.info "[PubSub] Unsubscribed to #{klass} (#{num_subs} subscriptions)" }

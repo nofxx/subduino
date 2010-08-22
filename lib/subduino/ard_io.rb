@@ -52,8 +52,8 @@ module Subduino
 
       def write(msg)
         Log.info "[IO  TX] #{msg}"
-        txt = msg.sub("\n", "\r")
-        txt += "\r" unless txt =~ /\\r/
+        txt = msg.gsub("\n", "\r")
+        txt += "\r" unless txt =~ /^\\r/
         sp.write(txt)
       end
 
