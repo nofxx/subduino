@@ -33,6 +33,19 @@ module Subduino
         redis.rpush "#{k}_log", v
       end
 
+      def count
+        redis.dbsize
+      end
+
+      def flush
+        redis.flushdb
+        #redis.flushall
+      end
+
+      def all
+        redis.keys
+      end
+
 
       # def method_missing(*args)
       #   read(args[0])
