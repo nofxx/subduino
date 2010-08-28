@@ -1,0 +1,14 @@
+GEM
+  remote: http://gemcutter.org/
+  specs:
+    rack (1.2.1)
+    redis (2.0.5)
+    sinatra (1.0)
+      rack (>= 1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  redis
+  sinatra
