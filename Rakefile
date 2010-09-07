@@ -43,3 +43,34 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+desc "Download and install arduino libraries"
+task :clibs do |t|
+  puts "Starting...."
+  get_c_lib("Messenger")
+  puts "Done"
+  #/usr/share/arduino/libraries
+
+end
+
+
+def get_c_lib(name)
+  puts "C LIB #{name}"
+  `mkdir #{name}`
+  [:h, :cpp].each do |ext|
+    next if File.exists?("#{name}/#{name}.#{ext}")
+    `wget http://github.com/nofxx/Messenger/raw/master/arduino/Messenger/#{name}.#{ext} -O #{name}/#{name}.#{ext}`
+  end
+  install_c_lib(name)
+end
+
+def install_c_lib(name)
+  try_root("mv ./#{name} /usr/share/arduino/libraries/#{name}")
+end
+
+def try_root(comm)
+  unless system(comm)
+    puts "Trying sudo..."
+    `sudo #{comm}`
+  end
+end
