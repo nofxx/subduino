@@ -7,7 +7,7 @@ module Subduino
     end
 
     class DigParser
-      def initialize(v); @v = v;  end
+      def initialize(v); @v = v.to_i;  end
       def digital?; true;   end
       def to_s; @v.to_s; end
       def raw; @v; end
@@ -15,12 +15,16 @@ module Subduino
 
     class AnaParser < DigParser
       def digital?; false;   end
-      def parse; @v.to_i;  end
+      def parse; @v;    end
+      def ratio
+        return 0 if @v.zero?
+        @v * 100 / 1023
+      end
     end
 
     class Bool < DigParser
       def parse
-        @v.to_i.zero? ? true : false
+        @v.zero? ? false : true
       end
 
       def to_s
@@ -33,7 +37,7 @@ module Subduino
 
     class Temp < AnaParser
       def parse
-        @v.to_i * 0.035
+        @v * 0.035
       end
 
       def to_s
@@ -43,7 +47,7 @@ module Subduino
 
     class Lux < AnaParser
       def parse
-        (@v.to_i * 0.5).to_i
+        (@v * 0.5).to_i
       end
 
       def to_s

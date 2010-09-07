@@ -10,7 +10,12 @@ describe Parse do
 
   it "should parse digital" do
     d = Bool.new(8)
-    d.to_s.should eql("OFF")
+    d.to_s.should eql("ON")
+  end
+
+  it "should parse analog ratio" do
+    d = Knob.new(1023)
+    d.ratio.should eql(100)
   end
 
 end
