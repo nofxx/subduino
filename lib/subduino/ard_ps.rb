@@ -2,10 +2,11 @@ module Subduino
   class ArdPS
 
     def self.redis
-      @redis ||= Redis.new(:timeout => 0)
+      @redis ||= Redis.new(:timeout => 0) rescue false
     end
 
     def self.read
+      return Log.warn "[PubSub] Not started..." unless @redis
       Thread.new do
         begin
           redis.subscribe('subduin') do |on|
@@ -18,7 +19,8 @@ module Subduino
             on.unsubscribe {|klass, num_subs| Log.info "[PubSub] Unsubscribed to #{klass} (#{num_subs} subscriptions)" }
           end
         rescue => e
-          Log.error "[PubSub] Error #{e} #{e.backtrace}"
+          Log.error "[PubSub] Error #{e}"
+          Log.error e.backtrace.join("\n")
         end
 
       end
@@ -26,6 +28,10 @@ module Subduino
 
     def self.write(msg)
       redis.publish('subdout', msg)
+    end
+
+    def self.stop!
+      redis.disconnect if @redis
     end
 
   end

@@ -15,34 +15,27 @@ module Subduino
         #
         # Read I/O
         #
-        Thread.new do
+        @iothread ||= Thread.new do
           Thread.current.abort_on_exception = false
           icache = []
 
           loop do
             begin
-              if char = sp.getc
+              while char = sp.getc
                 if char !~ /\n|\r/
                   icache << char
                 else
                   data = icache.join(""); icache = []
                   if data =~ /:/
-                    read = []
-                    Log.info "[IO  RX] --------------- #{Time.now.to_i}"
-                    data.split(",").each do |d|
-                      comm, value = d.split(":")
-                      Store.write(comm, value)
-                      read << "#{comm}: #{value}"
-                    end
-                    txt = read.join(", ")
-                    proc.call(txt)
-                    Log.info "[SENSOR] #{txt}"
+                    proc.call(data)
+                    Log.info "[SENSOR] #{data}"
                   else
                     proc.call(data) unless data.empty?
                     # Log.info "[INPUT] Done."
                   end
                 end
               end
+              sleep 1
             rescue => e
               Log.error "[USB] Error #{e}"
               Log.error e.backtrace.join("\n")
@@ -56,6 +49,10 @@ module Subduino
         txt = msg.gsub("\n", "\r")
         txt += "\r" unless txt =~ /^\\r/
         sp.write(txt)
+      end
+
+      def stop!
+        sp.close
       end
 
     end

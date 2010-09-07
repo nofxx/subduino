@@ -10,7 +10,7 @@ module Subduino
     class << self
 
       def redis
-        @redis ||= Redis.new(:timeout => 0)
+        @redis ||= Redis.new(:timeout => 0) rescue false
       end
 
 
@@ -29,8 +29,17 @@ module Subduino
       end
 
       def add_to_store(k, v)
+        return unless redis.connected?
         redis.set k, v
         redis.rpush "#{k}_log", v
+      end
+
+      def add_csv_to_store(csv)
+        Log.info "[STORE] CSV #{Time.now.to_i}"
+        csv.split(",").each do |d|
+          comm, value = d.split(":")
+          write(comm, value)
+        end
       end
 
       def count

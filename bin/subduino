@@ -12,17 +12,9 @@ OptionParser.new { |op|
 
 # set :run, true
 
-def halt!
-  puts "Closing daemon..."
-  @redis.quit
-  @sp.close
-  puts "OK"
-  exit 0
-end
-trap(:TERM) { halt! }
-trap(:INT)  { halt! }
+if ARGV.empty?
 
-
-Subduino.start do |read|
-  puts "[IO] #{read}"
+  Subduino.start do |read|
+    puts "[IO] #{read}"
+  end
 end

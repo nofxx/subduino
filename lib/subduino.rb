@@ -5,6 +5,7 @@
 #
 #
 require 'serialport'
+require 'eventmachine'
 require 'stringio'
 require 'readline'
 require 'logger'
@@ -28,17 +29,20 @@ module Subduino
 
 
   def self.start(&proc)
+    trap(:TERM) { stop! }
+    trap(:INT)  { stop! }
     # Start some threads...
     ArdIO.read &proc
     ArdPS.read
 
-    # Be a daemon.
-    loop do; end
+    # Be a daemon. Should be a better way..
+    EM.run do; end
   end
 
-  def self.stop
-    ArdIO.stop
-    ArdPS.stop
+  def self.stop!
+    ArdIO.stop!
+    ArdPS.stop!
+    exit 0
   end
 
 end
