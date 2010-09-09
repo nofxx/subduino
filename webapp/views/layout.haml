@@ -8,8 +8,10 @@
   /%script{:src => "/app.js", :type => "application/x-javascript"}
   %script{:src => "/jquery.js", :type => "application/x-javascript"}
   %script{:src => "/sparkline.js", :type => "application/x-javascript"}
+  %script{:src => "/faye.js", :type => "application/x-javascript"}
 
 %body
   .toolbar
     %h1#pageTitle= @title
   = yield
+  %script{:src => "/rt.js", :type => "application/x-javascript"}

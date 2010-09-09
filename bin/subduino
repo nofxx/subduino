@@ -3,6 +3,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'rubygems'
 require 'optparse'
 require 'subduino'
+require 'faye'
 
 OptionParser.new { |op|
   op.on('-e env')    { |val| set :environment, val.to_sym }
@@ -14,7 +15,14 @@ OptionParser.new { |op|
 
 if ARGV.empty?
 
-  Subduino.start do |read|
-    puts "[IO] #{read}"
+  client = Faye::Client.new('http://localhost:8000/faye')
+
+  EM.run do
+
+    Subduino.start do |read|
+      client.publish('/stats', 'data' => read)
+      puts "[IO] #{read}"
+    end
+
   end
 end

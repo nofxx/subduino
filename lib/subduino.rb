@@ -36,7 +36,7 @@ module Subduino
     ArdPS.read
 
     # Be a daemon. Should be a better way..
-    EM.run do; end
+    # EM.run do; end
   end
 
   def self.stop!

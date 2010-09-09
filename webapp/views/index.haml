@@ -1,8 +1,7 @@
 
 
 %ul#home{:selected => "true", :title => @title}
-  =# @sensors
-  - unless @sensors.empty?
+  - unless true # @sensors.empty?
     %li.group Sensors
     - @sensors.each do |name, sensor|
       %li{:id => name}
@@ -49,3 +48,4 @@
     %img{:src => "icons/ruby.png"}/
     = @footer
     [ok]
+  #stats

@@ -38,7 +38,7 @@ get '/' do
   @sensors = DUINO.sensors
   @host = `hostname`
   @stats = Duino.cpu_status
-  @footer = "Duino v0.0.1 - #{@host}"
+  @footer = "Subduino www v0.0.1 - #{@host}"
   show(:index, @host)
 end
 
