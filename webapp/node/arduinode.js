@@ -1,29 +1,50 @@
-// Arduino <> Subduino/Node <> WWW
+// Arduino Node.js
+
 
 var sys  = require('sys'),
-    http = require('http'),
-    faye = require('./vendor/faye');
+fs  = require('fs'),
+faye  = require('./vendor/faye');
 
-var bayeux = new faye.NodeAdapter({
-  mount:    '/faye',
-  timeout:  45
+var dpath = "/dev/ttyUSB1";
+
+var client = new faye.Client('http://localhost:8000/faye');
+
+var subscription = client.subscribe('/foo', function(message) {
+  sys.puts("SUB!!!");  // handle message
 });
 
-sys.puts("Starting server...");
+var log = function(txt) {
+  sys.puts(txt)
+}
 
-// Handle non-Bayeux requests
-var server = http.createServer(function(request, response) {
-  response.writeHead(200, {'Content-Type': 'text/plain'});
-  response.write('Nothing to see here...');
-  response.end();
+var find_arduino = function(err, stats) {
+  if(err)
+    return log("Arduino not found...");
+
+  log("DUIN!");
+  log(sys.inspect(stats));
+}
+
+fs.stat("/dev/ttyUSB1", find_arduino);
+
+
+var rr = fs.createReadStream(dpath);
+
+
+rr.addListener('data', function (chunk) {
+  log('data: ' + chunk);
 });
 
-bayeux.attach(server);
-server.listen(8000);
+rr.on('data', function (chunk) {
+  log('data: ' + chunk);
+});
+
+rr.on('end', function () {
+  log('end');
+});
 
 
-// var client = new faye.Client('http://localhost:8000/faye');
-// bayeux.getClient().publish('/email/new', {
-//   text:       'New email has arrived!',
-//   inboxSize:  34
-// });
+
+
+
+
