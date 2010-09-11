@@ -51,30 +51,9 @@ Messenger message = Messenger();
 
 // Create the callback function
 
-unsigned long mintomilli(unsigned long min) {
-  return(min * 60000);
+unsigned long mintomilli(unsigned long m) {
+  return(m * 60000);
 }
-
-void setup()  {
-  // nothing happens in setup
-  pinMode(infoPin, OUTPUT);
-  pinMode(relPin, OUTPUT);
-  pinMode(motorPin, OUTPUT);
-  pinMode(ledPin, OUTPUT);
-
-  // Atmega defaults INPUT
-  // pinMode(btnPin, INPUT);
-  // pinMode(touchPin, INPUT);
-  // testFalse();
-  shoot = mintomilli(shoot);
-
-  attachInterrupt(0, btnLed, CHANGE);
-  Serial.begin(115200);
-  //Serial.begin(9600);
-  message.attach(messageReady);
-}
-
-
 
 void btnLed() {
   if(digitalRead(btnPin) == 1) {
@@ -106,6 +85,29 @@ void messageReady() {
 
 }
 
+void setup()  {
+  // nothing happens in setup
+  pinMode(infoPin, OUTPUT);
+  pinMode(relPin, OUTPUT);
+  pinMode(motorPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+
+  // Atmega defaults INPUT
+  // pinMode(btnPin, INPUT);
+  // pinMode(touchPin, INPUT);
+  // testFalse();
+  shoot = mintomilli(shoot);
+
+  attachInterrupt(0, btnLed, CHANGE);
+  Serial.begin(115200);
+  //Serial.begin(9600);
+  message.attach(messageReady);
+}
+
+
+
+
+
 void loop()  {
 
   time_now = millis();
@@ -126,7 +128,7 @@ void loop()  {
   //  interrupts();
   if ( abs(time_now - last_shoot) >= shoot) {
     last_shoot = time_now;
-    Serial.println("SHOOTING");
+    //  Serial.println("SHOOTING");
     digitalWrite(ledPin, HIGH);  // turn the ledPin on
     delay(400);                  // stop the program for some time
     digitalWrite(ledPin, LOW);   // turn the ledPin off
@@ -141,7 +143,8 @@ void loop()  {
             analogRead(soundPin),  // sound
             analogRead(lightPin),  // light
             analogRead(tempPin));  // temp
-    Serial.println(buffer);
+    //Serial.println(buffer);
+    Serial.println("b");
     // Terminate message with a linefeed and a carriage return
     // Serial.print(13,BYTE);
     // Serial.print(10,BYTE);
