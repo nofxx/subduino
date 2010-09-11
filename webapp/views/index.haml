@@ -1,51 +1,83 @@
 
+.block
+  .block_head
+    .bheadl
+    .bheadr
+    %h2 Sensors
+  / .block_head ends
+  .block_content
+    %ul.imglist
+      %li
+        %img{:alt => "", :src => "icons/temp.png"}/
+        %h2 22°c
+        %ul
+          %li.view
+            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+          %li.delete
+            %a{:href => "#deleted"} Delete
+      %li
+        %img{:alt => "", :src => "icons/temp.png"}/
+        %h2 26°c
+        %ul
+          %li.view
+            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+          %li.delete
+            %a{:href => "#deleted"} Delete
+      - unless true # @sensors.empty?
+        %li.group Sensors
+        - @sensors.each do |name, sensor|
+          %li{:id => name}
+            %a{:href => "/g/#{name}"}
+              - if sensor.digital?
+                %img{:src => "icons/#{sensor.parse}.png"}/
+                = name
+                %span.tiny.gray= sensor
+              - else
+                %img{:src => "icons/groups.png"}/
+                = sensor
+                %span.tiny.gray= name.to_s.capitalize
+              %span.pico.gray (#{sensor.raw}~)
+      - @watches.each do |state, watches|
+        %li.group= state.capitalize
+        - for watch in watches.sort
+          %li{:id => watch}
+            %a{:href => "/w/#{watch}"}
+              %img{:src => "icons/#{@statuses[watch][:state]}.png"}/
+              = watch
 
-%ul#home{:selected => "true", :title => @title}
-  - unless true # @sensors.empty?
-    %li.group Sensors
-    - @sensors.each do |name, sensor|
-      %li{:id => name}
-        %a{:href => "/g/#{name}"}
-          - if sensor.digital?
-            %img{:src => "icons/#{sensor.parse}.png"}/
-            = name
-            %span.tiny.gray= sensor
-          - else
-            %img{:src => "icons/groups.png"}/
-            = sensor
-            %span.tiny.gray= name.to_s.capitalize
-          %span.pico.gray (#{sensor.raw}~)
-  - @watches.each do |state, watches|
-    %li.group= state.capitalize
-    - for watch in watches.sort
-      %li{:id => watch}
-        %a{:href => "/w/#{watch}"}
-          %img{:src => "icons/#{@statuses[watch][:state]}.png"}/
-          = watch
-  %li.group Control
-  %li#god_opts
-    %a{:href => "/o"}
-      %img{:src => "icons/start.png"}/
-      Power
-  %li#god_opts
-    %a{:href => "/o"}
-      %img{:src => "icons/dashboard.png"}/
-      Sensors
-  %li#top_show
-    %a{:href => "/t"}
-      %img{:src => "icons/terminal.png"}/
-      Top
-  %li#home_icon
-    %a{:href => "/i"}
-      %img{:src => "icons/bookmark.png"}/
-      Icon
-  %li.group About
-  - for stat in @stats
-    %li.tiny
-      %img{:src => "icons/#{stat[0]}.png"}/
-      = stat[1]
-  %li.tiny
-    %img{:src => "icons/ruby.png"}/
-    = @footer
-    [ok]
+.block
+  .block_head
+    .bheadl
+    .bheadr
+    %h2 Actions
+  / .block_head ends
+  .block_content
+    %ul.imglist
+      %li
+        %img{:alt => "", :src => "icons/door.png"}/
+        %h2 Open
+        %ul
+          %li.view
+            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+          %li.delete
+            %a{:href => "#deleted"} Delete
+
+
+  // %li.group Control
+  // %li#god_opts
+  //   %a{:href => "/o"}
+  //     %img{:src => "icons/start.png"}/
+  //     Power
+  // %li#god_opts
+  //   %a{:href => "/o"}
+  //     %img{:src => "icons/dashboard.png"}/
+  //     Sensors
+  // %li#top_show
+  //   %a{:href => "/t"}
+  //     %img{:src => "icons/terminal.png"}/
+  //     Top
+  // %li#home_icon
+  //   %a{:href => "/i"}
+  //     %img{:src => "icons/bookmark.png"}/
+  //     Icon
   #stats

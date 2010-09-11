@@ -2,16 +2,113 @@
 %head
   %title= @title
   %meta{ :content => "text/html;charset=UTF-8", "http-equiv" => "content-type" }/
-  %style{:media => "screen", :type => "text/css"} @import "/iui/iuix.css";
-  %style{:media => "screen", :type => "text/css"} @import "/app.css";
-  %style{:media => "screen", :type => "text/css"} @import "/layout.css";
+  // %style{:media => "screen", :type => "text/css"} @import "/iui/iuix.css";
+  // %style{:media => "screen", :type => "text/css"} @import "/app.css";
+  // %style{:media => "screen", :type => "text/css"} @import "/layout.css";
+
+  %link{:href => "style.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "jquery.wysiwyg.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "facebox.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "visualize.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "date_input.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
+
   /%script{:src => "/app.js", :type => "application/x-javascript"}
   %script{:src => "/jquery.js", :type => "application/x-javascript"}
   %script{:src => "/sparkline.js", :type => "application/x-javascript"}
   %script{:src => "/faye.js", :type => "application/x-javascript"}
 
 %body
-  .toolbar
-    %h1#pageTitle= @title
-  = yield
+  #hld
+    .wrapper
+      / wrapper begins
+      #header
+        .hdrl
+        .hdrr
+        %h1
+          %a{:href => "#"}= @title
+        %ul#nav
+          %li
+            %a{:href => "#"} Dashboard
+          %li.active
+            %a{:href => "#"} Power
+            %ul
+              %li
+                %a{:href => "#"} List pages
+              %li
+                %a{:href => "#"} Add page
+              %li
+                %a{:href => "#"} More actions
+                %ul
+                  %li
+                    %a{:href => "#"} Some action
+                  %li
+                    %a{:href => "#"} Some action
+                  %li
+                    %a{:href => "#"} Some action
+                    %ul
+                      %li
+                        %a{:href => "#"} Some action
+                      %li
+                        %a{:href => "#"} Some action
+                      %li
+                        %a{:href => "#"} Some action
+          %li
+            %a{:href => "#"} Sensors
+          %li
+            %a{:href => "#"} Options
+            %ul
+              %li
+                %a{:href => "#"} List media
+              %li
+                %a{:href => "#"} Add media
+              %li
+                %a{:href => "#"} Something else
+          %li
+            %a{:href => "#"} Users
+        %p.user
+          Hello,
+          %a{:href => "#"} John
+          |
+          %a{:href => "index.html"} Logout
+      / #header ends
+      = yield
+
+      .block
+        .block_head
+          .bheadl
+          .bheadr
+          %h2 Stats
+          %ul.tabs
+            %li
+              %a{:href => "#days"} Per days
+            %li
+              %a{:href => "#months"} Per months
+        .block_content
+          %li.group About
+          - for stat in @stats
+            %li.tiny
+              %img{:src => "icons/#{stat[0]}.png"}/
+              = stat[1]
+
+      .block
+        .block_head
+          .bheadl
+          .bheadr
+          %h2 Pages
+          %ul
+            %li
+              %a{:href => "#"} Edit pages
+            %li
+              %a{:href => "#"} Add page
+          / .block_head ends
+        .block_content
+          .message.errormsg
+            %p An error message goes here
+          .message.success
+            %p A success message goes here
+  %li.tiny
+    %img{:src => "icons/ruby.png"}/
+    = @footer
+    [ok]
+
   %script{:src => "/rt.js", :type => "application/x-javascript"}
