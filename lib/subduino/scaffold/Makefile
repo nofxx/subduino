@@ -1,6 +1,6 @@
 ########################################################################
 #
-# Arduino command line tools Makefile
+# !!SCAFFOLD!! Arduino command line tools Makefile
 # System part (i.e. project independent)
 #
 # Copyright (C) 2010 Martin Oldfield <m@mjo.tc>, based on work that is
@@ -42,12 +42,12 @@
 #
 ARDUINO_DIR  = /usr/share/arduino
 #
-TARGET       = DUINO
+TARGET       = !!SCAFFOLD!!
 ARDUINO_LIBS = Messenger
 
 MCU          = atmega328p
 F_CPU        = 16000000
-ARDUINO_PORT = /dev/ttyUSB* #cu.usb*
+ARDUINO_PORT = /dev/ttyUSB* 
 
 # Linux
 AVR_TOOLS_PATH = /usr/bin
