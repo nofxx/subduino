@@ -26,9 +26,9 @@ if ARGV.empty?
   end
 end
 
-if ARGV[0] =~ /\//
-  require "subduino/generators/makefile/makefile"
+  require "subduino/scaffold/generator"
   dir = ARGV[0]
   puts "Subduing dir #{dir}"
-  Makefile.create(dir)
-end
+  `mkdir #{dir}` unless File.exists?(dir)
+
+Subduino::Generator.copy_files(dir)
