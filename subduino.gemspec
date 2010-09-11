@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{subduino}
-  s.version = "0.0.2"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Marcos Piccinini"]
-  s.date = %q{2010-09-06}
-  s.description = %q{TODO: longer description of your gem}
+  s.date = %q{2010-09-11}
+  s.description = %q{Interface, compile, upload, play with arduino/ruby}
   s.email = %q{x@nofxx.com}
   s.executables = ["subduino-cli", "subduino"]
   s.files = [
@@ -18,18 +18,28 @@ Gem::Specification.new do |s|
      ".gitignore",
      "Rakefile",
      "Readme.textile",
-     "Rub.h",
      "VERSION",
      "bin/subduino",
      "bin/subduino-cli",
-     "control.pde",
+     "duino/.gitignore",
+     "duino/Makefile",
+     "duino/duino.pde",
+     "duino/duino.rb",
+     "duino/methods.pde",
      "lib/subduino.rb",
      "lib/subduino/ard_io.rb",
      "lib/subduino/ard_ps.rb",
      "lib/subduino/arduino.rb",
      "lib/subduino/parse.rb",
+     "lib/subduino/scaffold/Makefile",
+     "lib/subduino/scaffold/Makefile2",
+     "lib/subduino/scaffold/generator.rb",
+     "lib/subduino/scaffold/scaffold.pde",
+     "lib/subduino/scaffold/scaffold.rb",
      "lib/subduino/store.rb",
-     "methods.pde",
+     "node/arduinode.js",
+     "node/server.js",
+     "node/vendor/faye.js",
      "spec/spec_helper.rb",
      "spec/subduino/ard_io_spec.rb",
      "spec/subduino/parse_spec.rb",
@@ -47,6 +57,7 @@ Gem::Specification.new do |s|
      "webapp/lib/messenger.rb",
      "webapp/public/app.css",
      "webapp/public/app.js",
+     "webapp/public/faye.js",
      "webapp/public/icons/alarm-clock-blue.png",
      "webapp/public/icons/alarm-clock.png",
      "webapp/public/icons/balloon-left.png",
@@ -186,6 +197,7 @@ Gem::Specification.new do |s|
      "webapp/public/jquery.js",
      "webapp/public/layout.css",
      "webapp/public/right.js",
+     "webapp/public/rt.js",
      "webapp/public/sparkline.js",
      "webapp/spec/duino_spec.rb",
      "webapp/spec/spec_helper.rb",
@@ -202,7 +214,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{TODO: one-line summary of your gem}
+  s.summary = %q{Arduino Ruby Helpers}
   s.test_files = [
     "spec/subduino_spec.rb",
      "spec/spec_helper.rb",
