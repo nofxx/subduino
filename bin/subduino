@@ -12,7 +12,6 @@ OptionParser.new { |op|
 }.parse!(ARGV.dup)
 
 # set :run, true
-
 if ARGV.empty?
 
   client = Faye::Client.new('http://localhost:8000/faye')
@@ -25,4 +24,11 @@ if ARGV.empty?
     end
 
   end
+end
+
+if ARGV[0] =~ /\//
+  require "subduino/generators/makefile/makefile"
+  dir = ARGV[0]
+  puts "Subduing dir #{dir}"
+  Makefile.create(dir)
 end
