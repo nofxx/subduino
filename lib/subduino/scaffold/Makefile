@@ -6,17 +6,17 @@
 # Copyright (C) 2010 Martin Oldfield <m@mjo.tc>, based on work that is
 # Copyright Nicholas Zambetti, David A. Mellis & Hernando Barragan
 #
-#
 # See footer for copyright/changelog....
 # 
 
 #
-# CONFIGURATION
+# CONFIGURATION [EDIT ME]
 #
 TARGET       = !!SCAFFOLD!!
 ARDUINO_DIR  = /usr/share/arduino
 ARDUINO_LIBS = Messenger
 
+# Board
 MCU          = atmega328p
 F_CPU        = 16000000
 ARDUINO_PORT = /dev/ttyUSB* 
@@ -24,6 +24,10 @@ ARDUINO_PORT = /dev/ttyUSB*
 # Linux
 AVR_TOOLS_PATH = /usr/bin
 AVRDUDE_CONF   = /usr/share/arduino/hardware/tools/avrdude.conf
+
+# AVRDUDE
+AVRDUDE_ARD_PROGRAMMER = stk500v1
+AVRDUDE_ARD_BAUDRATE   = 57600
 
 # INC_DIRS  =  ./vendor/Messenger
 #

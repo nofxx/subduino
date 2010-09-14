@@ -34,7 +34,6 @@ WebApp (gems):
 h2. Create a project
 
 <pre><code>
-
     subduino some/dir/bot
     ...creates folder and some sketch files...
 
