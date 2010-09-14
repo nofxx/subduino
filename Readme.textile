@@ -1,8 +1,9 @@
 h1. Subduino
 
-Talks to arduino using cool stuff.
+Arduino Tools on Ruby
 
 http://github.com/nofxx/subduino
+
 
 h2. Install
 
@@ -12,11 +13,46 @@ h2. Install
 h3. Requirements
 
 * "Arduino":http://arduino.cc
+
+PubSub (gems):
+
 * "serialport":http://github.com/hparra/ruby-serialport
 * "redis":http://github.com/ezmobius/redis-rb
 
+Compile/Upload to arduino (archlinux pkgs):
 
-h2. Use
+* "arduino" or "arduino64"
+* "gcc-avr"
+* "avrdude"
+
+WebApp (gems):
+
+* sinatra
+* haml
+
+
+h2. Create a project
+
+    subduino some/dir/bot
+    ...creates folder and some sketch files...
+
+h3. bot.rb
+
+Simple example that monitors arduinos on the USB.
+
+h3. bot.pde
+
+Common arduino source, can be compiled/uploaded via the IDE or:
+
+h3. Makefile
+
+Nice makefile so you don't need the IDE ;)
+It's being tested (works) on archlinux with arduino 0019.
+It's just a matter of setting the first lines of the Makefile correct for your OS.
+Please let me know so I can detect the OS and write a correct makefile for other distros.
+
+
+h2. PubSub
 
 <pre><code>
 
@@ -29,6 +65,11 @@ h2. Use
     Subduino.write(TXT)
 
 </pre></code>
+
+
+h2. Webapp
+
+Need some heavy work...
 
 
 h2. Contributing
