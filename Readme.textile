@@ -33,8 +33,12 @@ WebApp (gems):
 
 h2. Create a project
 
+<pre><code>
+
     subduino some/dir/bot
     ...creates folder and some sketch files...
+
+</pre></code>
 
 h3. bot.rb
 
@@ -47,6 +51,8 @@ Common arduino source, can be compiled/uploaded via the IDE or:
 h3. Makefile
 
 Nice makefile so you don't need the IDE ;)
+Use 'make' or 'make upload'.
+
 It's being tested (works) on archlinux with arduino 0019.
 It's just a matter of setting the first lines of the Makefile correct for your OS.
 Please let me know so I can detect the OS and write a correct makefile for other distros.
