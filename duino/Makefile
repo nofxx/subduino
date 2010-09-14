@@ -1,48 +1,20 @@
-########################################################################
+#
 #
 # duino Arduino command line tools Makefile
-# System part (i.e. project independent)
+# 
 #
 # Copyright (C) 2010 Martin Oldfield <m@mjo.tc>, based on work that is
 # Copyright Nicholas Zambetti, David A. Mellis & Hernando Barragan
+#
+#
+# See footer for copyright/changelog....
 # 
-# This file is free software; you can redistribute it and/or modify it
-# under the terms of the GNU Lesser General Public License as
-# published by the Free Software Foundation; either version 2.1 of the
-# License, or (at your option) any later version.
+
 #
-# Adapted from Arduino 0011 Makefile by M J Oldfield
-#
-# Original Arduino adaptation by mellis, eighthave, oli.keller
-#
-# Version 0.1  17.ii.2009  M J Oldfield
-#
-#         0.2  22.ii.2009  M J Oldfield
-#                          - fixes so that the Makefile actually works!
-#                          - support for uploading via ISP
-#                          - orthogonal choices of using the Arduino for
-#                            tools, libraries and uploading
-#
-#         0.3  21.v.2010   M J Oldfield
-#                          - added proper license statement
-#                          - added code from Philip Hands to reset
-#                            Arduino prior to upload
-#
-#         0.4  25.v.2010   M J Oldfield
-#                          - tweaked reset target on Philip Hands' advice
-#
-########################################################################
-#
-# STANDARD ARDUINO WORKFLOW
-#
-# Given a normal sketch directory, all you need to do is to create
-# a small Makefile which defines a few things, and then includes this one.
-#
-# For example:
-#
-ARDUINO_DIR  = /usr/share/arduino
+# CONFIGURATION
 #
 TARGET       = duino
+ARDUINO_DIR  = /usr/share/arduino
 ARDUINO_LIBS = Messenger
 
 MCU          = atmega328p
@@ -55,9 +27,6 @@ AVRDUDE_CONF   = /usr/share/arduino/hardware/tools/avrdude.conf
 
 # INC_DIRS  =  ./vendor/Messenger
 
-#
-#       include /usr/local/share/Arduino.mk
-#
 # Hopefully these will be self-explanatory but in case they're not:
 #
 #    ARDUINO_DIR  - Where the Arduino software has been unpacked
@@ -70,6 +39,14 @@ AVRDUDE_CONF   = /usr/share/arduino/hardware/tools/avrdude.conf
 #    ARDUINO_PORT - The port where the Arduino can be found (only needed
 #                   when uploading
 #
+# ARDUINO WITH OTHER TOOLS
+# 
+# If the tools aren't in the Arduino distribution, then you need to 
+# specify their location:
+#
+#    AVR_TOOLS_PATH = /usr/bin
+#    AVRDUDE_CONF   = /etc/avrdude/avrdude.conf
+
 # Once this file has been created the typical workflow is just
 #
 #   $ make upload
@@ -87,16 +64,6 @@ AVRDUDE_CONF   = /usr/share/arduino/hardware/tools/avrdude.conf
 #   make depends    - update dependencies
 #   make reset      - reset the Arduino by tickling DTR on the serial port
 #   make raw_upload - upload without first resetting
-#
-########################################################################
-#
-# ARDUINO WITH OTHER TOOLS
-# 
-# If the tools aren't in the Arduino distribution, then you need to 
-# specify their location:
-#
-#    AVR_TOOLS_PATH = /usr/bin
-#    AVRDUDE_CONF   = /etc/avrdude/avrdude.conf
 #
 ########################################################################
 #
@@ -399,3 +366,39 @@ depends:	$(DEPS)
 .PHONY:	all clean depends upload raw_upload reset
 
 include $(DEP_FILE)
+
+#
+# This makefile is from:
+# http://mjo.tc/atelier/2009/02/arduino-cli.html
+# 
+# With some help:
+#
+# http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1265576847
+# http://johanneshoff.com/arduino-command-line/Makefile
+#
+# This file is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Lesser General Public License as
+# published by the Free Software Foundation; either version 2.1 of the
+# License, or (at your option) any later version.
+#
+# Adapted from Arduino 0011 Makefile by M J Oldfield
+#
+# Original Arduino adaptation by mellis, eighthave, oli.keller
+#
+# Version 0.1  17.ii.2009  M J Oldfield
+#
+#         0.2  22.ii.2009  M J Oldfield
+#                          - fixes so that the Makefile actually works!
+#                          - support for uploading via ISP
+#                          - orthogonal choices of using the Arduino for
+#                            tools, libraries and uploading
+#
+#         0.3  21.v.2010   M J Oldfield
+#                          - added proper license statement
+#                          - added code from Philip Hands to reset
+#                            Arduino prior to upload
+#
+#         0.4  25.v.2010   M J Oldfield
+#                          - tweaked reset target on Philip Hands' advice
+#
+########################################################################
