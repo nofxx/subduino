@@ -16,15 +16,52 @@
             %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
           %li.delete
             %a{:href => "#deleted"} Delete
+
       %li
         %h3 Sala de Jantar
-        %img{:alt => "", :src => "icons/temp.png"}/
-        %h2 26°c
+        %img{:alt => "", :src => "icons/luminosity.png"}/
+        %h2 200
         %ul
           %li.view
             %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
           %li.delete
             %a{:href => "#deleted"} Delete
+      %li
+        %h3 Quintal
+        %img{:alt => "", :src => "icons/rain.png"}/
+        %h2 Chuva
+        %ul
+          %li.view
+            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+          %li.delete
+            %a{:href => "#deleted"} Delete
+      %li
+        %img{:alt => "", :src => "icons/day.png"}/
+        %h2 Dia
+        %ul
+          %li.view
+            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+          %li.delete
+            %a{:href => "#deleted"} Delete
+      %li
+        %h3 Casa
+        %img{:alt => "", :src => "icons/current.png"}/
+        %h2 50A
+        %ul
+          %li.view
+            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+          %li.delete
+            %a{:href => "#deleted"} Delete
+      %li
+        %h3 Room 1
+        %img{:alt => "", :src => "icons/noise.png"}/
+        %h2 Noise
+        %ul
+          %li.view
+            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+          %li.delete
+            %a{:href => "#deleted"} Delete
+
       - unless true # @sensors.empty?
         %li.group Sensors
         - @sensors.each do |name, sensor|
