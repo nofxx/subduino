@@ -1,5 +1,5 @@
 
-.block
+.block.small.left
   .block_head
     .bheadl
     .bheadr
@@ -44,8 +44,9 @@
             %a{:href => "/w/#{watch}"}
               %img{:src => "icons/#{@statuses[watch][:state]}.png"}/
               = watch
-
-.block
+  .bendl
+  .bendr
+.block.small.right
   .block_head
     .bheadl
     .bheadr
@@ -78,6 +79,8 @@
             %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
           %li.delete
             %a{:href => "#deleted"} Delete
+  .bendl
+  .bendr
 
 
   // %li.group Control
