@@ -780,6 +780,19 @@ padding:1px;
 position:relative;
 width:140px;
 }
+.block .block_content .imglist h3 {
+  font-size: 0.8em;
+  font-family:"Titillium800","Trebuchet MS",Arial,sans-serif;
+  font-weight: bold;
+  outline:medium none;
+  color: #888;
+  /* text-shadow:0 0 2px #000000; */
+  padding: 0 0 0 0;
+  line-height: 0px;
+  margin: 5px 5px 0 0;
+  float: right;
+
+}
 .block .block_content .imglist h2 {
   font-size: 2.8em;
   font-family:"Titillium800","Trebuchet MS",Arial,sans-serif;
