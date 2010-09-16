@@ -45,7 +45,7 @@ width:90%;
 }
 #header {
 background:url("images/hdr.gif") repeat-x scroll 0 0 transparent;
-color:#999999;
+color:#eee;
 font-weight:bold;
 height:50px;
 line-height:50px;
@@ -64,11 +64,12 @@ height:50px;
 width:20px;
 }
 #header a {
-color:#999999;
+color:#ddd;
 text-decoration:none;
 }
 #header a:hover {
-color:#FFFFFF;
+color:#666;
+text-decoration:none;
 }
 #header h1 {
 color:#FFFFFF;
@@ -208,7 +209,7 @@ float:right;
 font-size:11px;
 }
 #header .user a {
-text-decoration:underline;
+text-decoration:none;
 }
 #header .user a:hover {
 text-decoration:none;
