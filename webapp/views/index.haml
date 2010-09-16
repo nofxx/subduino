@@ -54,7 +54,7 @@
   .block_content
     %ul.imglist
       %li
-        %img{:alt => "", :src => "icons/door-big.png"}/
+        %img{:alt => "", :src => "icons/unlocked.png"}/
         %h2 Open
         %ul
           %li.view
@@ -63,7 +63,16 @@
             %a{:href => "#deleted"} Delete
       %li
         %img{:alt => "", :src => "icons/lamp-big.png"}/
-        %h2 Off
+        %h2 Open
+        %ul
+          %li.view
+            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+          %li.delete
+            %a{:href => "#deleted"} Delete
+
+      %li
+        %img{:alt => "", :src => "icons/locked.png"}/
+        %h2 Close
         %ul
           %li.view
             %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
