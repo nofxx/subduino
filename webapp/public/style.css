@@ -769,7 +769,7 @@ padding:0;
 -webkit-box-shadow: 2px 2px 3px #CCCCCC;
 -webkit-border-radius:5px 5px 5px 5px;
 
-    background:url("images/bhead.gif") repeat-x scroll 0 0 transparent;
+    background:url("images/bread.gif") repeat-x scroll 0 0 transparent;
 /* background:none repeat scroll 0 50% transparent; */
 border:1px solid #DDD;
 display:block;
@@ -781,7 +781,7 @@ position:relative;
 width:140px;
 }
 .block .block_content .imglist h2 {
-  font-size: 3em;
+  font-size: 2.8em;
   font-family:"Titillium800","Trebuchet MS",Arial,sans-serif;
   font-weight: bold;
   outline:medium none;

@@ -28,6 +28,7 @@ const int infoPin = 13;
 const int knobPin  = 0;
 const int lightPin = 1;
 const int tempPin  = 2;
+const int piezoPin = 3;
 const int doorPin  = 4;
 const int soundPin = 5;
 // Digital
@@ -136,12 +137,13 @@ void loop()  {
 
   if ( abs(time_now - last_sync) >= sync) {
     last_sync = time_now;
-    sprintf(buffer, "i0:%d,i1:%d,knob:%d,sound:%d,lux:%d,temp:%d",
+    sprintf(buffer, "i0:%d,i1:%d,knob:%d,sound:%d,lux:%d,piezo:%d,temp:%d",
             digitalRead(btnPin),   // i0
             analogRead(doorPin),   // i1
             analogRead(knobPin),   // knob
             analogRead(soundPin),  // sound
             analogRead(lightPin),  // light
+            analogRead(piezoPin), // light
             analogRead(tempPin));  // temp
     Serial.println(buffer);
     // Terminate message with a linefeed and a carriage return
