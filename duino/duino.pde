@@ -119,7 +119,7 @@ void loop()  {
   // Sync over wire
   if ( abs(time_now - last_sync) >= sync) {
     last_sync = time_now;
-    sprintf(buffer, "i0:i1:%d,i2:%d,i3:%d,i4:%d,i5:%d,d11:%d,d12:%d",
+    sprintf(buffer, "i0:%d,i1:%d,i2:%d,i3:%d,i4:%d,i5:%d,d11:%d,d12:%d",
             analogRead(i0),
             analogRead(i1),
             analogRead(i2),
