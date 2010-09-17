@@ -7,69 +7,71 @@
   / .block_head ends
   .block_content
     %ul.imglist
-      %li
-        %h3 Room 1
-        %img{:alt => "", :src => "icons/temp.png"}/
-        %h2 22°c
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
+      - for sensor in @sensors
+        %li
+          %img{:alt => "", :src => "icons/#{sensor.type}.png"}/
+          %h2= sensor
+          %ul
+            %li.view
+              %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+            %li.delete
+              %a{:href => "#deleted"} Delete
+          %br
+          .sparklines 1,3,6,2,7,2,4,5
+          %h3= sensor.name
+      -# %li
+      -#   %h3 Sala de Jantar
+      -#   %img{:alt => "", :src => "icons/luminosity.png"}/
+      -#   %h2 200
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
+      -# %li
+      -#   %h3 Quintal
+      -#   %img{:alt => "", :src => "icons/rain.png"}/
+      -#   %h2 Chuva
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
+      -# %li
+      -#   %img{:alt => "", :src => "icons/day.png"}/
+      -#   %h2 Dia
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
+      -# %li
+      -#   %img{:alt => "", :src => "icons/night.png"}/
+      -#   %h2 Noite
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
 
-      %li
-        %h3 Sala de Jantar
-        %img{:alt => "", :src => "icons/luminosity.png"}/
-        %h2 200
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
-      %li
-        %h3 Quintal
-        %img{:alt => "", :src => "icons/rain.png"}/
-        %h2 Chuva
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
-      %li
-        %img{:alt => "", :src => "icons/day.png"}/
-        %h2 Dia
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
-      %li
-        %img{:alt => "", :src => "icons/night.png"}/
-        %h2 Noite
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
-
-      %li
-        %h3 Casa
-        %img{:alt => "", :src => "icons/current.png"}/
-        %h2 50A
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
-      %li
-        %h3 Room 1
-        %img{:alt => "", :src => "icons/noise.png"}/
-        %h2 Noise
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
+      -# %li
+      -#   %h3 Casa
+      -#   %img{:alt => "", :src => "icons/current.png"}/
+      -#   %h2 50A
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
+      -# %li
+      -#   %h3 Room 1
+      -#   %img{:alt => "", :src => "icons/noise.png"}/
+      -#   %h2 Noise
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
 
       - unless true # @sensors.empty?
         %li.group Sensors
@@ -103,7 +105,6 @@
   .block_content
     %ul.imglist
       %li
-        %h3 Portão
         %img{:alt => "", :src => "icons/unlocked.png"}/
         %h2 Open
         %ul
@@ -111,56 +112,201 @@
             %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
           %li.delete
             %a{:href => "#deleted"} Delete
-      %li
-        %h3 Cafofo
-        %img{:alt => "", :src => "icons/irrigation.png"}/
-        %h2 On
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
+        %br
+        %h3 Portão
+      -# %li
+      -#   %h3 Cafofo
+      -#   %img{:alt => "", :src => "icons/irrigation.png"}/
+      -#   %h2 On
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
 
 
-      %li
-        %img{:alt => "", :src => "icons/lamp-big.png"}/
-        %h2 Open
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
+      -# %li
+      -#   %img{:alt => "", :src => "icons/lamp-big.png"}/
+      -#   %h2 Open
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
 
-      %li
-        %h3 A/C
-        %img{:alt => "", :src => "icons/refrigeration.png"}/
-        %h2 +20
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
-      %li
-        %img{:alt => "", :src => "icons/lamp-big.png"}/
-        %h2 On
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
+      -# %li
+      -#   %h3 A/C
+      -#   %img{:alt => "", :src => "icons/refrigeration.png"}/
+      -#   %h2 +20
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
+      -# %li
+      -#   %img{:alt => "", :src => "icons/lamp-big.png"}/
+      -#   %h2 On
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
 
-      %li
-        %h3 Porta Sala
-        %img{:alt => "", :src => "icons/locked.png"}/
-        %h2 Close
-        %ul
-          %li.view
-            %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
-          %li.delete
-            %a{:href => "#deleted"} Delete
+      -# %li
+      -#   %h3 Porta Sala
+      -#   %img{:alt => "", :src => "icons/locked.png"}/
+      -#   %h2 Close
+      -#   %ul
+      -#     %li.view
+      -#       %a{:href => "http://farm3.static.flickr.com/2646/4240549111_fcb8c478fe.jpg", :rel => "facebox"} View
+      -#     %li.delete
+      -#       %a{:href => "#deleted"} Delete
   .bendl
   .bendr
 
+.block
+  .block_head
+    .bheadl
+    .bheadr
+    %h2 Stats
+    %ul.tabs
+      %li
+        %a{:href => "#days"} Per days
+      %li
+        %a{:href => "#months"} Per months
+  / .block_head ends
+  #days.block_content.tab_content
+    %table.stats{:cellpadding => "0", :cellspacing => "0", :rel => "line", :width => "100%"}
+      %thead
+        %tr
+          %td &nbsp;
+          %th{:scope => "col"} 01.03
+          %th{:scope => "col"} 02.03
+          %th{:scope => "col"} 03.03
+          %th{:scope => "col"} 04.03
+          %th{:scope => "col"} 05.03
+          %th{:scope => "col"} 06.03
+          %th{:scope => "col"} 07.03
+          %th{:scope => "col"} 08.03
+          %th{:scope => "col"} 09.03
+          %th{:scope => "col"} 10.03
+          %th{:scope => "col"} 11.03
+          %th{:scope => "col"} 12.03
+          %th{:scope => "col"} 13.03
+          %th{:scope => "col"} 14.03
+      %tbody
+        %tr
+          %th{:scope => "row"} Page views
+          %td 50
+          %td 90
+          %td 40
+          %td 120
+          %td 180
+          %td 280
+          %td 320
+          %td 220
+          %td 100
+          %td 120
+          %td 40
+          %td 70
+          %td 20
+          %td 60
+        %tr
+          %th{:scope => "row"} Unique visitors
+          %td 30
+          %td 50
+          %td 15
+          %td 90
+          %td 140
+          %td 160
+          %td 230
+          %td 170
+          %td 50
+          %td 90
+          %td 30
+          %td 50
+          %td 10
+          %td 40
+    / .block_content ends
+    #months.block_content.tab_content
+      %table.stats{:cellpadding => "0", :cellspacing => "0", :rel => "bar", :width => "100%"}
+        %thead
+          %tr
+            %td &nbsp;
+            %th{:scope => "col"} JAN
+            %th{:scope => "col"} FEB
+            %th{:scope => "col"} MAR
+            %th{:scope => "col"} APR
+            %th{:scope => "col"} MAY
+            %th{:scope => "col"} JUN
+            %th{:scope => "col"} JUL
+            %th{:scope => "col"} AUG
+            %th{:scope => "col"} SEP
+            %th{:scope => "col"} OCT
+            %th{:scope => "col"} NOV
+            %th{:scope => "col"} DEC
+            %th{:scope => "col"} JAN
+            %th{:scope => "col"} FEB
+        %tbody
+          %tr
+            %th{:scope => "row"} Page views
+            %td 1800
+            %td 900
+            %td 700
+            %td 1200
+            %td 600
+            %td 2800
+            %td 3200
+            %td 500
+            %td 2200
+            %td 1000
+            %td 1200
+            %td 700
+            %td 650
+            %td 800
+          %tr
+            %th{:scope => "row"} Unique visitors
+            %td 1600
+            %td 650
+            %td 550
+            %td 900
+            %td 500
+            %td 2300
+            %td 2700
+            %td 350
+            %td 1700
+            %td 600
+            %td 1000
+            %td 500
+            %td 400
+            %td 700
+    / .block_content ends
+    .bendl
+    .bendr
+
+
+.block
+  .block_head
+    .bheadl
+    .bheadr
+    %h2 Pages
+    %ul
+      %li
+        %a{:href => "#"} Edit pages
+      %li
+        %a{:href => "#"} Add page
+    / .block_head ends
+  .block_content
+    %li.group About
+    - for stat in @stats
+      %li.tiny
+        %img{:src => "icons/#{stat[0]}.png"}/
+        = stat[1]
+
+    .message.errormsg
+      %p An error message goes here
+    .message.success
+      %p A success message goes here
 
   // %li.group Control
   // %li#god_opts

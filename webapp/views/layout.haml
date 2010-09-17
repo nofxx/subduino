@@ -14,8 +14,13 @@
 
   /%script{:src => "/app.js", :type => "application/x-javascript"}
   %script{:src => "/jquery.js", :type => "application/x-javascript"}
-  %script{:src => "/sparkline.js", :type => "application/x-javascript"}
+  %script{:src => "/jquery.img.preload.js", :type => "application/x-javascript"}
+  %script{:src => "/jquery.tablesorter.min.js", :type => "application/x-javascript"}
+  %script{:src => "/jquery.visualize.js", :type => "application/x-javascript"}
+  %script{:src => "/jquery.sparkline.js", :type => "application/x-javascript"}
+  %script{:src => "/facebox.js", :type => "application/x-javascript"}
   %script{:src => "/faye.js", :type => "application/x-javascript"}
+  %script{:src => "/custom.js", :type => "application/x-javascript"}
 
   %link{:href => '/icons/favicon.png', :rel => 'shortcut icon'}
 
@@ -75,39 +80,6 @@
       / #header ends
       = yield
 
-      .block
-        .block_head
-          .bheadl
-          .bheadr
-          %h2 Stats
-          %ul.tabs
-            %li
-              %a{:href => "#days"} Per days
-            %li
-              %a{:href => "#months"} Per months
-        .block_content
-          %li.group About
-          - for stat in @stats
-            %li.tiny
-              %img{:src => "icons/#{stat[0]}.png"}/
-              = stat[1]
-
-      .block
-        .block_head
-          .bheadl
-          .bheadr
-          %h2 Pages
-          %ul
-            %li
-              %a{:href => "#"} Edit pages
-            %li
-              %a{:href => "#"} Add page
-          / .block_head ends
-        .block_content
-          .message.errormsg
-            %p An error message goes here
-          .message.success
-            %p A success message goes here
   %li.tiny
     %img{:src => "icons/ruby.png"}/
     = @footer

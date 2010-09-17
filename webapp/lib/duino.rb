@@ -1,6 +1,7 @@
 
 class Duino
-  Sensors = { :i0 => "Bool", :i1 => "Bool", :temp => "Temp", :lux => "Lux", :knob => "Knob" }
+
+  Config = YAML.load(File.read("config.yml"))
 
   def initialize(config)
     @config = config
@@ -8,22 +9,14 @@ class Duino
   end
 
   def sensors(one=nil)
-    s = one ? Sensors.select { |k,v| k.to_s == one.to_s } : Sensors
-    s.reduce({}) do |h, s|
-      val = @redis.get(s[0]) rescue nil
+    sensors = Config["inputs"]
+    # s = one ? Sensors.select { |k,v| k.to_s == one.to_s } : Sensors
+    sensors.map do |s|
+      p s
+      val = @redis.get(s[0]) #rescue nil
       next unless val
-      k, v = *s
-      sensor = Subduino::Parse.work(v, val)
-      # if v == "Bool"
-      #   info = "#{)} (#{val}~)"
-      #   val = k
-      # else
-      #   info = "#{k.capitalize} (#{val}~)"
-      #   val = Subduino::Parse.work(v, val).to_s
-      # end
-      h.merge!({ k => sensor })
-      h
-    end
+      Subduino::Parse.work(s[1]["type"], val, s[1]["name"])
+    end.reject(&:nil?)
   end
 
   def switch(pins, comm)

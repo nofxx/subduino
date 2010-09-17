@@ -35,7 +35,7 @@ get '/' do
   #   @watches << watch.to_s
   # end
   # @watches = @watches.group_by { |w| @statuses[w][:state].to_s }
-  @sensors = DUINO.sensors
+  @sensors = DUINO.sensors || []
   @host = `hostname`
   @stats = Duino.cpu_status
   @footer = "Subduino www v0.0.1 - #{@host}"
@@ -98,6 +98,6 @@ private
 
 def show(template, title = 'Duino')
   @title = title
-  p request.env['HTTP_XHR']
+  request.env['HTTP_XHR']
   haml(template, :layout => get_layout)
 end
