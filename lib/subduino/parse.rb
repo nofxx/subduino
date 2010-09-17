@@ -29,40 +29,11 @@ module Subduino
       end
     end
 
-    class Bool < DigParser
-      def parse
-        @v.zero? ? false : true
-      end
-
-      def to_s
-        parse ? "ON" : "OFF"
-      end
-    end
-
     class Knob < AnaParser
     end
-
-    class Temp < AnaParser
-      def parse
-        @v * 0.035
-      end
-
-      def to_s
-        "%0.2f°C" % parse
-      end
-    end
-
-    class Lux < AnaParser
-      def parse
-        (@v * 0.5).to_i
-      end
-
-      def to_s
-        "#{parse} L"
-      end
-    end
-
 
 
   end
 end
+
+Dir[File.dirname(__FILE__) + "/parse/*.rb"].each { |f| require f}

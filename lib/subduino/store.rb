@@ -13,7 +13,6 @@ module Subduino
         @redis ||= Redis.new(:timeout => 0) rescue false
       end
 
-
       def read(key)
         redis.get key
       end

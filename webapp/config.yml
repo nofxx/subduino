@@ -1,4 +1,5 @@
 ---
+log_interval: 60
 inputs:
   i1:
     type: Temp
