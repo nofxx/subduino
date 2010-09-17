@@ -6,11 +6,11 @@
   // %style{:media => "screen", :type => "text/css"} @import "/app.css";
   // %style{:media => "screen", :type => "text/css"} @import "/layout.css";
 
-  %link{:href => "style.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
-  %link{:href => "jquery.wysiwyg.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
-  %link{:href => "facebox.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
-  %link{:href => "visualize.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
-  %link{:href => "date_input.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
+  = stylesheet_link_tag "style", "facebox", "visualize" #, :cache => "cache/cssall"
+  = javascript_include_tag "jquery", "jquery-ui", "rails", "helper", "main" #, :cache => "cache/jsall"
+
+  -# %link{:href => "jquery.wysiwyg.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
+  -# %link{:href => "date_input.css", :media => "all", :rel => "stylesheet", :type => "text/css"}/
 
   /%script{:src => "/app.js", :type => "application/x-javascript"}
   %script{:src => "/jquery.js", :type => "application/x-javascript"}

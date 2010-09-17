@@ -12,30 +12,39 @@ OptionParser.new { |op|
 }.parse!(ARGV.dup)
 
 # set :run, true
-if ARGV.empty?
+
+
+if ARGV.empty? || ARGV.join =~ /yml/
+  LastRun = {:all => 0}
+  if File.exists?(f = ARGV.join)
+    puts "Using config file #{f}"
+    AppConfig = YAML.load(File.read(f))["opts"]
+  else
+    AppConfig = { "log_interval" => 30, "bauds" => 57600 }
+  end
 
   client = Faye::Client.new('http://localhost:8000/faye')
 
   EM.run do
 
     Subduino.start do |read|
-      client.publish('/stats', 'data' => read)
-      Subduino::Store.add_csv_to_store(read)
       puts "[IO] #{read}"
+      if LastRun[:all] < (Time.now.to_i - AppConfig["log_interval"])
+        p "Syncing...."
+        LastRun[:all] = Time.now.to_i
+        client.publish('/stats', 'data' => read)
+        Subduino::Store.add_csv_to_store(read, true)
+      else
+        Subduino::Store.add_csv_to_store(read)
+      end
     end
 
   end
-
 else
-
-  if ARGV.join =~ /yml/
-    # load config
-  else
-    require "subduino/scaffold/generator"
-    dir = ARGV[0]
-    puts "Subduing dir #{dir}"
-    `mkdir #{dir}` unless File.exists?(dir)
-    Subduino::Generator.copy_files(dir)
-  end
-
+  require "subduino/scaffold/generator"
+  dir = ARGV[0]
+  puts "Subduing dir #{dir}"
+  `mkdir #{dir}` unless File.exists?(dir)
+  Subduino::Generator.copy_files(dir)
 end
+

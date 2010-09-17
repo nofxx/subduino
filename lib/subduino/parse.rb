@@ -2,13 +2,14 @@
 module Subduino
   module Parse
 
-    def self.work(klass, v, name=nil)
-      const_get(klass).new(v, name)
+    def self.work(klass, v, name=nil, id=nil)
+      const_get(klass).new(v, name, id)
     end
 
     class DigParser
-      def initialize(v,n=nil)
+      def initialize(v,n=nil,id=nil)
         @v = v.to_i
+        @id = id
         @name = n
       end
       def digital?; true;   end
@@ -18,6 +19,10 @@ module Subduino
         self.class.to_s.split("::")[-1].downcase # ugly
       end
       def raw; @v; end
+
+      def sparkline
+        Store.redis.lrange "#{@id}_log", -50, -1
+      end
     end
 
     class AnaParser < DigParser

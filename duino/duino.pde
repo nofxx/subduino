@@ -31,12 +31,12 @@ const int d9 = 9;
 const int infoPin = 13;
 
 // Input
-const int i1 = A0;
-const int i2 = A1;
-const int i3 = A2;
-const int i4 = A3;
-const int i5 = A4;
-const int i6 = A5;
+const int i0 = A0;
+const int i1 = A1;
+const int i2 = A2;
+const int i3 = A3;
+const int i4 = A4;
+const int i5 = A5;
 // Digital
 const int d10 = 10;
 const int d11 = 11;
@@ -119,13 +119,13 @@ void loop()  {
   // Sync over wire
   if ( abs(time_now - last_sync) >= sync) {
     last_sync = time_now;
-    sprintf(buffer, "i1:%d,i2:%d,i3:%d,i4:%d,i5:%d,i6:%d,d11:%d,d12:%d",
+    sprintf(buffer, "i0:i1:%d,i2:%d,i3:%d,i4:%d,i5:%d,d11:%d,d12:%d",
+            analogRead(i0),
             analogRead(i1),
             analogRead(i2),
             analogRead(i3),
             analogRead(i4),
             analogRead(i5),
-            analogRead(i6),
             digitalRead(d11),
             digitalRead(d12));
     Serial.println(buffer);
