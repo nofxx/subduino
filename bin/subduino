@@ -20,6 +20,7 @@ if ARGV.empty?
 
     Subduino.start do |read|
       client.publish('/stats', 'data' => read)
+      Subduino::Store.add_csv_to_store(read)
       puts "[IO] #{read}"
     end
 

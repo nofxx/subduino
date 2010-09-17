@@ -18,20 +18,20 @@ module Subduino
         redis.get key
       end
 
-      def write(key, val=nil)
-        if val
-          add_to_store key, val
-        else
-          key.each do |k,v|
-            add_to_store k, v
-          end
-        end
-      end
-
-      def add_to_store(k, v)
-        return unless redis.connected?
+      def write(k, v)
+       # return unless redis.connected?
         redis.set k, v
         redis.rpush "#{k}_log", v
+      end
+
+      def add_to_store(key, val=nil)
+        if val
+          write key, val
+        else
+          key.each do |k,v|
+            write k, v
+          end
+        end
       end
 
       def add_csv_to_store(csv)

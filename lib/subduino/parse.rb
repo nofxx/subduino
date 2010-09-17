@@ -2,14 +2,21 @@
 module Subduino
   module Parse
 
-    def self.work(klass, v)
-      const_get(klass).new(v)
+    def self.work(klass, v, name=nil)
+      const_get(klass).new(v, name)
     end
 
     class DigParser
-      def initialize(v); @v = v.to_i;  end
+      def initialize(v,n=nil)
+        @v = v.to_i
+        @name = n
+      end
       def digital?; true;   end
       def to_s; @v.to_s; end
+      def name; @name; end
+      def type
+        self.class.to_s.split("::")[-1].downcase # ugly
+      end
       def raw; @v; end
     end
 

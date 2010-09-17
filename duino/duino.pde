@@ -19,20 +19,28 @@
 // Output
 const int rxPin = 0;
 const int txPin = 1;
-const int relPin = 3;
-const int motorPin = 10;
-const int ledPin = 6;
+//const int d2 = 2;
+const int d3 = 3;
+const int d4 = 4;
+const int d5 = 5;
+const int d6 = 6;
+const int d7 = 7;
+const int d8 = 8;
+const int d9 = 9;
+const int d10 = 10;
+const int d11 = 11;
+const int d12 = 12;
 const int infoPin = 13;
 
 // Input
-const int knobPin  = 0;
-const int lightPin = 1;
-const int tempPin  = 2;
-const int piezoPin = 3;
-const int doorPin  = 4;
-const int soundPin = 5;
+const int i1 = 0;
+const int i2 = 1;
+const int i3 = 2;
+const int i4 = 3;
+const int i5 = 4;
+const int i6 = 5;
 // Digital
-const int btnPin = 2;
+const int d2 = 2;
 
 // Intervals (s)
 unsigned long shoot = 1;
@@ -57,10 +65,10 @@ unsigned long mintomilli(unsigned long m) {
 }
 
 void btnLed() {
-  if(digitalRead(btnPin) == 1) {
+  if(digitalRead(d2) == 1) {
     Serial.println("BUTTON");
     digitalWrite(infoPin, HIGH);
-    analogWrite(relPin, 250);
+    analogWrite(d3, 250);
     if (motorState != 0) {
       motorState = 0;
     } else {
@@ -68,7 +76,7 @@ void btnLed() {
     }
   } else {
     digitalWrite(infoPin, LOW);
-    analogWrite(relPin, LOW);
+    analogWrite(d3, LOW);
   }
 
 }
@@ -89,12 +97,12 @@ void messageReady() {
 void setup()  {
   // nothing happens in setup
   pinMode(infoPin, OUTPUT);
-  pinMode(relPin, OUTPUT);
-  pinMode(motorPin, OUTPUT);
-  pinMode(ledPin, OUTPUT);
+  pinMode(d3, OUTPUT);
+  pinMode(d10, OUTPUT);
+  pinMode(d6, OUTPUT);
 
   // Atmega defaults INPUT
-  // pinMode(btnPin, INPUT);
+  // pinMode(d2, INPUT);
   // pinMode(touchPin, INPUT);
   // testFalse();
   shoot = mintomilli(shoot);
@@ -113,15 +121,15 @@ void loop()  {
 
   time_now = millis();
   // if (motorState != 0) {
-  //   analogWrite(motorPin, (analogRead(knobPin)/5));
+  //   analogWrite(d10, (analogRead(i1)/5));
   // } else {
-  //   analogWrite(motorPin, 0);
+  //   analogWrite(d10, 0);
   // }
 
 
-  // analogWrite(relPin, 250);
+  // analogWrite(d3, 250);
   // delay(500);
-  // analogWrite(relPin, 0);
+  // analogWrite(d3, 0);
   // delay(500);
 
 
@@ -130,21 +138,21 @@ void loop()  {
   if ( abs(time_now - last_shoot) >= shoot) {
     last_shoot = time_now;
     //  Serial.println("SHOOTING");
-    digitalWrite(ledPin, HIGH);  // turn the ledPin on
+    digitalWrite(d6, HIGH);  // turn the d6 on
     delay(400);                  // stop the program for some time
-    digitalWrite(ledPin, LOW);   // turn the ledPin off
+    digitalWrite(d6, LOW);   // turn the d6 off
   }
 
   if ( abs(time_now - last_sync) >= sync) {
     last_sync = time_now;
-    sprintf(buffer, "i0:%d,i1:%d,knob:%d,sound:%d,lux:%d,piezo:%d,temp:%d",
-            digitalRead(btnPin),   // i0
-            analogRead(doorPin),   // i1
-            analogRead(knobPin),   // knob
-            analogRead(soundPin),  // sound
-            analogRead(lightPin),  // light
-            analogRead(piezoPin), // light
-            analogRead(tempPin));  // temp
+    sprintf(buffer, "i1:%d,i2:%d,i3:%d,i4:%d,i5:%d,i6:%d,d2:%d",
+            analogRead(i1),
+            analogRead(i2),
+            analogRead(i3),
+            analogRead(i4),
+            analogRead(i5),
+            analogRead(i6),
+            digitalRead(d2));
     Serial.println(buffer);
     // Terminate message with a linefeed and a carriage return
     // Serial.print(13,BYTE);
@@ -162,10 +170,10 @@ void loop()  {
     // * Serial.println(1.23456, 4) gives "1.2346"
     // lightVal = buffer;
 
-    // if (analogRead(lightPin) > 200) {
-    //   analogWrite(relPin, 0);
+    // if (analogRead(i2) > 200) {
+    //   analogWrite(d3, 0);
     // } else {
-    //   analogWrite(relPin, 250);
+    //   analogWrite(d3, 250);
     // }
 
   }
