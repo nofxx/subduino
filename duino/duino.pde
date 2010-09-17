@@ -8,18 +8,16 @@
  */
 
 #include <Messenger.h>
-//#include <Rub.h>
 
 #define sec  1000
 #define min  60000
 #define hour 3600000
 #define day  86400000
 
-
 // Output
 const int rxPin = 0;
 const int txPin = 1;
-//const int d2 = 2;
+const int d2 = 2;
 const int d3 = 3;
 const int d4 = 4;
 const int d5 = 5;
@@ -27,20 +25,22 @@ const int d6 = 6;
 const int d7 = 7;
 const int d8 = 8;
 const int d9 = 9;
-const int d10 = 10;
-const int d11 = 11;
-const int d12 = 12;
+//const int d10 = 10;
+//const int d11 = 11;
+//const int d12 = 12;
 const int infoPin = 13;
 
 // Input
-const int i1 = 0;
-const int i2 = 1;
-const int i3 = 2;
-const int i4 = 3;
-const int i5 = 4;
-const int i6 = 5;
+const int i1 = A0;
+const int i2 = A1;
+const int i3 = A2;
+const int i4 = A3;
+const int i5 = A4;
+const int i6 = A5;
 // Digital
-const int d2 = 2;
+const int d10 = 10;
+const int d11 = 11;
+const int d12 = 12;
 
 // Intervals (s)
 unsigned long shoot = 1;
@@ -95,15 +95,13 @@ void messageReady() {
 }
 
 void setup()  {
-  // nothing happens in setup
-  pinMode(infoPin, OUTPUT);
-  pinMode(d3, OUTPUT);
-  pinMode(d10, OUTPUT);
-  pinMode(d6, OUTPUT);
-
   // Atmega defaults INPUT
-  // pinMode(d2, INPUT);
-  // pinMode(touchPin, INPUT);
+  pinMode(infoPin, OUTPUT);
+  pinMode(d2, OUTPUT);
+  pinMode(d3, OUTPUT);
+  pinMode(d6, OUTPUT);
+  pinMode(d10, OUTPUT);
+
   // testFalse();
   shoot = mintomilli(shoot);
 
@@ -114,46 +112,43 @@ void setup()  {
 }
 
 
-
-
-
 void loop()  {
 
   time_now = millis();
-  // if (motorState != 0) {
-  //   analogWrite(d10, (analogRead(i1)/5));
-  // } else {
-  //   analogWrite(d10, 0);
-  // }
 
-
-  // analogWrite(d3, 250);
-  // delay(500);
-  // analogWrite(d3, 0);
-  // delay(500);
-
-
-  // noInterrupts();
-  //  interrupts();
-  if ( abs(time_now - last_shoot) >= shoot) {
-    last_shoot = time_now;
-    //  Serial.println("SHOOTING");
-    digitalWrite(d6, HIGH);  // turn the d6 on
-    delay(400);                  // stop the program for some time
-    digitalWrite(d6, LOW);   // turn the d6 off
-  }
-
+  // Sync over wire
   if ( abs(time_now - last_sync) >= sync) {
     last_sync = time_now;
-    sprintf(buffer, "i1:%d,i2:%d,i3:%d,i4:%d,i5:%d,i6:%d,d2:%d",
+    sprintf(buffer, "i1:%d,i2:%d,i3:%d,i4:%d,i5:%d,i6:%d,d11:%d,d12:%d",
             analogRead(i1),
             analogRead(i2),
             analogRead(i3),
             analogRead(i4),
             analogRead(i5),
             analogRead(i6),
-            digitalRead(d2));
+            digitalRead(d11),
+            digitalRead(d12));
     Serial.println(buffer);
+  }
+
+
+  // if (motorState != 0) {
+  //   analogWrite(d10, (analogRead(i1)/5));
+  // } else {
+  //   analogWrite(d10, 0);
+  // }
+
+  // noInterrupts();
+  //  interrupts();
+
+  // if ( abs(time_now - last_shoot) >= shoot) {
+  //   last_shoot = time_now;
+  //   //  Serial.println("SHOOTING");
+  //   digitalWrite(d6, HIGH);  // turn the d6 on
+  //   delay(400);                  // stop the program for some time
+  //   digitalWrite(d6, LOW);   // turn the d6 off
+  // }
+
     // Terminate message with a linefeed and a carriage return
     // Serial.print(13,BYTE);
     // Serial.print(10,BYTE);
@@ -176,7 +171,6 @@ void loop()  {
     //   analogWrite(d3, 250);
     // }
 
-  }
 
   while ( Serial.available() )  message.process(Serial.read());
 

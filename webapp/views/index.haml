@@ -196,7 +196,7 @@
           %th{:scope => "col"} 14.03
       %tbody
         %tr
-          %th{:scope => "row"} Page views
+          %th{:scope => "row"} Umidade
           %td 50
           %td 90
           %td 40
@@ -212,7 +212,7 @@
           %td 20
           %td 60
         %tr
-          %th{:scope => "row"} Unique visitors
+          %th{:scope => "row"} Temp
           %td 30
           %td 50
           %td 15
@@ -281,32 +281,71 @@
             %td 400
             %td 700
     / .block_content ends
-    .bendl
-    .bendr
+  .bendl
+  .bendr
 
-
+.block.withsidebar
+  .block_head
+    .bheadl
+    .bheadr
+    %h2 Schedules
+  / .block_head ends
+  .block_content
+    .sidebar
+      %ul.sidemenu
+        %li
+          %a{:href => "#sb1"} Sensors
+        %li
+          %a{:href => "#sb2"} Actions
+        %li
+          %a{:href => "#sb3"} Info
+      %p
+        %strong Some notification text.
+        Donec hendrerit porttitor felis, id semper eros lobortis sed. Class aptent taciti sociosqu ad litora.
+    / .sidebar ends
+    #sb1.sidebar_content
+      %h3 Sidebar content 1
+      %p Aenean facilisis ligula eget orci adipiscing varius. Curabitur sem ligula, egestas vel bibendum sed, sodales eu nulla. Vestibulum luctus aliquam feugiat. Donec porta interdum placerat. Donec velit enim, porta vitae euismod ut, fermentum eu felis. Morbi aliquet, libero vel gravida facilisis, enim risus consequat tellus, vitae luctus est diam non nisi. Vivamus eget leo sit amet neque ultricies blandit. Sed tristique erat a sem ullamcorper tempor. Curabitur turpis lorem, semper et pharetra in, scelerisque in magna. Ut at tortor sed diam mattis rhoncus vel eget turpis. Praesent id diam velit, ullamcorper semper augue. Curabitur at orci tellus, sed tincidunt enim. Vivamus sed dolor vitae purus dignissim luctus quis sed nunc. Sed urna enim, auctor sit amet volutpat ut, porta sed leo. Integer dictum molestie elementum. Nullam dapibus tempus enim, id tincidunt arcu elementum varius.
+      %p Integer malesuada posuere nibh, ac commodo eros dictum eget. Maecenas vel urna ac sapien posuere tincidunt vel non metus. Morbi accumsan lectus at ante scelerisque molestie. Pellentesque in quam arcu, in lacinia orci. Sed blandit, neque sed ullamcorper lacinia, velit lectus lacinia lorem, id gravida sem arcu vel purus. Aenean tellus massa, elementum id condimentum ut, tempus ac dui. Integer consectetur neque placerat leo adipiscing iaculis. Vivamus tempor dui eu augue malesuada dignissim. In tempor odio eu augue ultricies ut hendrerit.
+    / .sidebar_content ends
+    #sb2.sidebar_content
+      %h3 Sidebar content 2
+      %p Integer malesuada posuere nibh, ac commodo eros dictum eget. Maecenas vel urna ac sapien posuere tincidunt vel non metus. Morbi accumsan lectus at ante scelerisque molestie. Pellentesque in quam arcu, in lacinia orci. Sed blandit, neque sed ullamcorper lacinia, velit lectus lacinia lorem, id gravida sem arcu vel purus. Aenean tellus massa, elementum id condimentum ut, tempus ac dui. Integer consectetur neque placerat leo adipiscing iaculis. Vivamus tempor dui eu augue malesuada dignissim. In tempor odio eu augue ultricies ut hendrerit.
+      %p Aenean facilisis ligula eget orci adipiscing varius. Curabitur sem ligula, egestas vel bibendum sed, sodales eu nulla. Vestibulum luctus aliquam feugiat. Donec porta interdum placerat. Donec velit enim, porta vitae euismod ut, fermentum eu felis. Morbi aliquet, libero vel gravida facilisis, enim risus consequat tellus, vitae luctus est diam non nisi. Vivamus eget leo sit amet neque ultricies blandit. Sed tristique erat a sem ullamcorper tempor. Curabitur turpis lorem, semper et pharetra in, scelerisque in magna. Ut at tortor sed diam mattis rhoncus vel eget turpis. Praesent id diam velit, ullamcorper semper augue. Curabitur at orci tellus, sed tincidunt enim. Vivamus sed dolor vitae purus dignissim luctus quis sed nunc. Sed urna enim, auctor sit amet volutpat ut, porta sed leo. Integer dictum molestie elementum. Nullam dapibus tempus enim, id tincidunt arcu elementum varius.
+    / .sidebar_content ends
+    #sb3.sidebar_content
+      %h3 Sidebar content 3
+      %p Aenean facilisis ligula eget orci adipiscing varius. Curabitur sem ligula, egestas vel bibendum sed, sodales eu nulla. Vestibulum luctus aliquam feugiat. Donec porta interdum placerat. Donec velit enim, porta vitae euismod ut, fermentum eu felis. Morbi aliquet, libero vel gravida facilisis, enim risus consequat tellus, vitae luctus est diam non nisi. Vivamus eget leo sit amet neque ultricies blandit. Sed tristique erat a sem ullamcorper tempor. Curabitur turpis lorem, semper et pharetra in, scelerisque in magna. Ut at tortor sed diam mattis rhoncus vel eget turpis. Praesent id diam velit, ullamcorper semper augue. Curabitur at orci tellus, sed tincidunt enim. Vivamus sed dolor vitae purus dignissim luctus quis sed nunc. Sed urna enim, auctor sit amet volutpat ut, porta sed leo. Integer dictum molestie elementum. Nullam dapibus tempus enim, id tincidunt arcu elementum varius.
+      %p Integer malesuada posuere nibh, ac commodo eros dictum eget. Maecenas vel urna ac sapien posuere tincidunt vel non metus. Morbi accumsan lectus at ante scelerisque molestie. Pellentesque in quam arcu, in lacinia orci. Sed blandit, neque sed ullamcorper lacinia, velit lectus lacinia lorem, id gravida sem arcu vel purus. Aenean tellus massa, elementum id condimentum ut, tempus ac dui. Integer consectetur neque placerat leo adipiscing iaculis. Vivamus tempor dui eu augue malesuada dignissim. In tempor odio eu augue ultricies ut hendrerit.
+    / .sidebar_content ends
+  / .block_content ends
+  .bendl
+  .bendr
+  / .block ends
 .block
   .block_head
     .bheadl
     .bheadr
-    %h2 Pages
+    %h2 Log
     %ul
       %li
-        %a{:href => "#"} Edit pages
+        %a{:href => "#"} Alerts
       %li
-        %a{:href => "#"} Add page
+        %a{:href => "#"} Today
     / .block_head ends
   .block_content
-    %li.group About
+    About
     - for stat in @stats
       %li.tiny
         %img{:src => "icons/#{stat[0]}.png"}/
         = stat[1]
+  .bendl
+  .bendr
 
-    .message.errormsg
-      %p An error message goes here
-    .message.success
-      %p A success message goes here
+    -# .message.errormsg
+    -#   %p An error message goes here
+    -# .message.success
+    -#   %p A success message goes here
 
   // %li.group Control
   // %li#god_opts

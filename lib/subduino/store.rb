@@ -19,7 +19,7 @@ module Subduino
       end
 
       def write(k, v)
-       # return unless redis.connected?
+        return unless redis #.connected?
         redis.set k, v
         redis.rpush "#{k}_log", v
       end
