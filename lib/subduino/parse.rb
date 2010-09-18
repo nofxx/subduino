@@ -20,9 +20,15 @@ module Subduino
       end
       def raw; @v; end
 
-      def sparkline
-        Store.redis.lrange "#{@id}_log", -50, -1
+      def sparkline(range = [-50, -1])
+        Store.redis.lrange "#{@id}_log", *range
       end
+
+      def graph(period)
+        Store.redis
+      end
+
+
     end
 
     class AnaParser < DigParser

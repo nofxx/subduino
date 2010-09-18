@@ -17,9 +17,13 @@ module Subduino
         redis.get key
       end
 
+      def timestamp
+        Time.now.to_i.to_s
+      end
+
       def write(k, v, stamp = false)
         return unless redis #.connected?
-        stamp ?  redis.rpush("#{k}_log", v) : redis.set(k, v)
+        stamp ?  redis.rpush("#{k}_log", "#{timestamp}:#{v}") : redis.set(k, v)
       end
 
 
@@ -39,6 +43,12 @@ module Subduino
           comm, value = d.split(":")
           write(comm, value, stamp)
         end
+      end
+
+      # SORT key [BY pattern] [LIMIT start count] [GET pattern]
+      # [ASC|DESC] [ALPHA] [STORE dstkey]
+      def read_hist(key, period, offset = 0, max = 100)
+        redis.sort key, { :order => 'desc', :limit => [offset, max] }
       end
 
       def count
