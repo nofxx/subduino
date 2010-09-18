@@ -1,17 +1,13 @@
-# -*- coding: utf-8 -*-
 module Subduino
   module Parse
-
-    class Temp < Analogic
+    class Flow < Analogic
       def parse
-        @v * 0.035
+        (@v * 0.5).to_i
       end
 
       def to_s
-        "%0.2f°C" % parse
+        "#{parse} cm3/h"
       end
     end
-
-
   end
 end

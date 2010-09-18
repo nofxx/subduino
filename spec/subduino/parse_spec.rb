@@ -4,7 +4,7 @@ describe Parse do
   include Parse
 
   it "should parse digital" do
-    d = DigParser.new(8)
+    d = Digital.new(8)
     d.should be_digital
   end
 

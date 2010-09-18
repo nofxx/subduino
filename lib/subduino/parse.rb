@@ -6,7 +6,7 @@ module Subduino
       const_get(klass).new(v, name, id)
     end
 
-    class DigParser
+    class Digital
       def initialize(v,n=nil,id=nil)
         @v = v.to_i
         @id = id
@@ -31,7 +31,7 @@ module Subduino
 
     end
 
-    class AnaParser < DigParser
+    class Analogic < Digital
       def digital?; false;   end
       def parse; @v;    end
       def ratio
@@ -40,7 +40,7 @@ module Subduino
       end
     end
 
-    class Knob < AnaParser
+    class Knob < Analogic
     end
 
 

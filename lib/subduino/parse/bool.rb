@@ -1,6 +1,6 @@
 module Subduino
   module Parse
-    class Bool < DigParser
+    class Bool < Digital
       def parse
         @v.zero? ? false : true
       end

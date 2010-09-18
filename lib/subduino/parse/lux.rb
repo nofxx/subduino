@@ -1,6 +1,6 @@
 module Subduino
   module Parse
-    class Lux < AnaParser
+    class Lux < Analogic
       def parse
         (@v * 0.5).to_i
       end
