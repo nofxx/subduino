@@ -23,7 +23,7 @@ module Subduino
 
       def write(k, v, stamp = false)
         return unless redis #.connected?
-        stamp ?  redis.rpush("#{k}_log", "#{timestamp}:#{v}") : redis.set(k, v)
+        stamp ?  redis.rpush("log:inputs:#{k}", "#{timestamp}:#{v}") : redis.set("now:inputs:"+k, v)
       end
 
 

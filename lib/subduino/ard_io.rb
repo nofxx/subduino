@@ -28,14 +28,15 @@ module Subduino
                   data = icache.join(""); icache = []
                   if data =~ /:/
                     proc.call(data)
-                    Log.info "[SENSOR] #{data}"
+                    Log.info "[IO  RX] #{data}"
                   else
-                    proc.call(data) unless data.empty?
-                    # Log.info "[INPUT] Done."
+                    unless data.empty?
+                      Log.info "[IO  RX] #{data}"
+                      proc.call(data)
+                    end
                   end
                 end
               end
-              sleep 1
             rescue => e
               Log.error "[USB] Error #{e}"
               Log.error e.backtrace.join("\n")

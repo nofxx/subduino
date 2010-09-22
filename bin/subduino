@@ -28,7 +28,8 @@ if ARGV.empty? || ARGV.join =~ /yml/
   EM.run do
 
     Subduino.start do |read|
-      puts "[IO] #{read}"
+        #   Subduino::ArdIO.write("hi")
+      #puts "[IO] #{read}"
       if LastRun[:all] < (Time.now.to_i - AppConfig["log_interval"])
         p "Syncing...."
         LastRun[:all] = Time.now.to_i
@@ -36,10 +37,16 @@ if ARGV.empty? || ARGV.join =~ /yml/
         Subduino::Store.add_csv_to_store(read, true)
       else
         Subduino::Store.add_csv_to_store(read)
+
+
       end
     end
 
   end
+elsif ARGV.join =~ /send/
+  txt = ARGV[1..-1].join
+  puts "Writing #{txt}"
+  Subduino::ArdPS.redis.publish('subduin', txt)
 else
   require "subduino/scaffold/generator"
   dir = ARGV[0]

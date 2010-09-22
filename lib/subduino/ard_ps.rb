@@ -6,7 +6,7 @@ module Subduino
     end
 
     def self.read
-      return Log.warn "[PubSub] Not started..." unless @redis
+      return Log.warn "[PubSub] Not started..." unless redis
       Thread.new do
         begin
           redis.subscribe('subduin') do |on|

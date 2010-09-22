@@ -9,10 +9,11 @@
 
 #include <Messenger.h>
 
-#define sec  1000
-#define min  60000
-#define hour 3600000
-#define day  86400000
+#define SEC  1000
+#define MIN  60000
+#define HOUR 3600000
+#define DAY  86400000
+#define MAX  50
 
 // Output
 const int rxPin = 0;
@@ -44,19 +45,21 @@ const int d12 = 12;
 
 // Intervals (s)
 unsigned long shoot = 1;
-unsigned long sync  = 5 * sec;
+unsigned long sync  = 5 * SEC;
 unsigned long time_now, last_shoot, last_sync;
 
 int btnState = 0;
 int touchState = 0;
 int motorState = 0;
 
-char buffer [50];
+char buffer[MAX];
 
 volatile int rx_state = LOW;
 volatile int tx_state = LOW;
 
 Messenger message = Messenger();
+//String foobs = String();
+char foobs[MAX];
 
 // Create the callback function
 
@@ -81,15 +84,19 @@ void btnLed() {
 
 }
 
-void messageReady() {
-  int pin = 2;
-  int val = 0;
+void messageRead() {
+  //  int pin = 2;
+  //int val = 0;
    // Loop through all the available elements of the message
-  while ( message.available() && pin <= infoPin ) {
-    val = message.readInt();
+  while ( message.available() ) {
+    // val = message.readInt();
+
     // Set the pin as determined by the message
-    analogWrite(pin, val);
-    pin = pin + 1;
+    analogWrite(infoPin, 250);
+    //  pin = pin + 1;
+    message.copyString(foobs, MAX);
+    // Serial.print(foobs); //string);
+    // Serial.println();
   }
 
 }
@@ -108,11 +115,13 @@ void setup()  {
   attachInterrupt(0, btnLed, CHANGE);
   Serial.begin(115200);
   //Serial.begin(9600);
-  message.attach(messageReady);
+  message.attach(messageRead);
 }
 
 
 void loop()  {
+
+  while ( Serial.available() )  message.process(Serial.read());
 
   time_now = millis();
 
@@ -129,7 +138,12 @@ void loop()  {
             digitalRead(d11),
             digitalRead(d12));
     Serial.println(buffer);
+    Serial.println(foobs);
+    Serial.println("FOOBS");
   }
+
+
+}
 
 
   // if (motorState != 0) {
@@ -172,9 +186,6 @@ void loop()  {
     // }
 
 
-  while ( Serial.available() )  message.process(Serial.read());
-
-}
 
 // void pulseJob(pin) {
 //   analogWrite(pin, 250);
