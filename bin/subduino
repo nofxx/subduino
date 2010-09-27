@@ -5,11 +5,14 @@ require 'optparse'
 require 'subduino'
 require 'faye'
 
+Debug = false
+
 OptionParser.new { |op|
+  op.on('-d', '--debug')  { |d| Debug = true }
   op.on('-e env')    { |val| set :environment, val.to_sym }
   op.on('-s server') { |val| set :server, val }
   op.on('-p port')   { |val| set :port, val.to_i }
-}.parse!(ARGV.dup)
+}.parse!(ARGV)
 
 # set :run, true
 
@@ -28,17 +31,17 @@ if ARGV.empty? || ARGV.join =~ /yml/
   EM.run do
 
     Subduino.start do |read|
-        #   Subduino::ArdIO.write("hi")
-      #puts "[IO] #{read}"
+      #   Subduino::ArdIO.write("hi")
+      if Debug
+        puts "--------------------- #{Time.now}"
+        p read
+      end
       if LastRun[:all] < (Time.now.to_i - AppConfig["log_interval"])
-        p "Syncing...."
         LastRun[:all] = Time.now.to_i
         client.publish('/stats', 'data' => read)
         Subduino::Store.add_csv_to_store(read, true)
       else
         Subduino::Store.add_csv_to_store(read)
-
-
       end
     end
 

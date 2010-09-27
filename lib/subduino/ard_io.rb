@@ -19,36 +19,36 @@ module Subduino
           Thread.current.abort_on_exception = false
           icache = []
 
-          loop do
-            begin
-              while char = sp.getc
-                if char !~ /\n|\r/
-                  icache << char
+          begin
+            while char = sp.getc
+              if char !~ /\n|\r/
+                icache << char
+              else
+                data = icache.join(""); icache = []
+                if data =~ /:/
+                  proc.call(data)
+                  Log.info "[IO  RX] #{data}"
                 else
-                  data = icache.join(""); icache = []
-                  if data =~ /:/
-                    proc.call(data)
+                  unless data.empty?
                     Log.info "[IO  RX] #{data}"
-                  else
-                    unless data.empty?
-                      Log.info "[IO  RX] #{data}"
-                      proc.call(data)
-                    end
+                    proc.call(data)
                   end
                 end
               end
-            rescue => e
-              Log.error "[USB] Error #{e}"
-              Log.error e.backtrace.join("\n")
+              # sleep 1
             end
+          rescue => e
+            Log.error "[USB] Error #{e}"
+            Log.error e.backtrace.join("\n")
           end
         end
       end
 
       def write(msg)
         Log.info "[IO  TX] #{msg}"
-        txt = msg.gsub("\n", "\r")
-        txt += "\r" unless txt =~ /^\\r/
+        txt = msg.gsub("\n", "\n\r")
+        txt += "\n\r" unless txt =~ /^\\r/
+        p txt + txt
         sp.write(txt)
       end
 

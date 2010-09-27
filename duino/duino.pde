@@ -57,7 +57,7 @@ char buffer[MAX];
 volatile int rx_state = LOW;
 volatile int tx_state = LOW;
 
-Messenger message = Messenger();
+Messenger message = Messenger(); //':');
 //String foobs = String();
 char foobs[MAX];
 
@@ -84,19 +84,32 @@ void btnLed() {
 
 }
 
+
 void messageRead() {
-  //  int pin = 2;
-  //int val = 0;
-   // Loop through all the available elements of the message
+  char * multiple;
+  int pin = 2;
+  int val = 0;
+
+  // Loop through all the available elements of the message
   while ( message.available() ) {
     // val = message.readInt();
-
+    Serial.println("RECEIVED");
     // Set the pin as determined by the message
-    analogWrite(infoPin, 250);
+    //    analogWrite(infoPin, 250);
     //  pin = pin + 1;
     message.copyString(foobs, MAX);
-    // Serial.print(foobs); //string);
-    // Serial.println();
+    //  multiple = strchr(foobs, ',');
+    // if(multiple == NULL) {
+    //   //       Serial.println("MULT");
+    //   int pin = message.readInt();
+    //   int val = message.readInt();
+    //   Serial.println("EXECUTING ");
+    //   Serial.println(pin);
+    //   Serial.println(val);
+    //   analogWrite(pin, val);
+    // } else {
+    //   pin = pin + 1;
+    // }
   }
 
 }
@@ -106,13 +119,16 @@ void setup()  {
   pinMode(infoPin, OUTPUT);
   pinMode(d2, OUTPUT);
   pinMode(d3, OUTPUT);
+  pinMode(d4, OUTPUT);
+  pinMode(d5, OUTPUT);
   pinMode(d6, OUTPUT);
+  pinMode(d7, OUTPUT);
   pinMode(d10, OUTPUT);
 
   // testFalse();
   shoot = mintomilli(shoot);
 
-  attachInterrupt(0, btnLed, CHANGE);
+  //  attachInterrupt(0, btnLed, CHANGE);
   Serial.begin(115200);
   //Serial.begin(9600);
   message.attach(messageRead);
@@ -137,9 +153,10 @@ void loop()  {
             analogRead(i5),
             digitalRead(d11),
             digitalRead(d12));
-    Serial.println(buffer);
+
+    Serial.println("rooo");
     Serial.println(foobs);
-    Serial.println("FOOBS");
+    Serial.println(buffer);
   }
 
 
