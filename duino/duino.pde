@@ -7,8 +7,6 @@
  *
  */
 
-// #include <Messenger.h>
-
 #define SEC  1000
 #define MIN  60000
 #define HOUR 3600000
@@ -129,8 +127,6 @@ void setup()  {
 
   //  attachInterrupt(0, btnLed, CHANGE);
   Serial.begin(115200);
-  //Serial.begin(9600);
-  // message.attach(messageRead);
 }
 
 

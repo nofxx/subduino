@@ -15,7 +15,7 @@
 #
 TARGET       = duino
 ARDUINO_DIR  = /usr/share/arduino
-ARDUINO_LIBS = Messenger
+# ARDUINO_LIBS = ExtraLib
 
 MCU          = atmega328p
 F_CPU        = 16000000
@@ -25,7 +25,6 @@ ARDUINO_PORT = /dev/ttyUSB*
 AVR_TOOLS_PATH = /usr/bin
 AVRDUDE_CONF   = /usr/share/arduino/hardware/tools/avrdude.conf
 
-# INC_DIRS  =  ./vendor/Messenger
 
 # Hopefully these will be self-explanatory but in case they're not:
 #
@@ -136,7 +135,7 @@ ifeq ($(strip $(NO_CORE)),)
 ifdef ARDUINO_CORE_PATH
 CORE_C_SRCS     = $(wildcard $(ARDUINO_CORE_PATH)/*.c)
 CORE_CPP_SRCS   = $(wildcard $(ARDUINO_CORE_PATH)/*.cpp)
-EXTRA_CPP_SRCS  = $(wildcard $(ARDUINO_LIB_PATH)/Messenger/*.cpp)
+# EXTRA_CPP_SRCS  = $(wildcard $(ARDUINO_LIB_PATH)/ExtraLib/*.cpp)
 CORE_OBJ_FILES  = $(CORE_C_SRCS:.c=.o) $(CORE_CPP_SRCS:.cpp=.o) $(EXTRA_CPP_SRCS:.cpp=.o) 
 CORE_OBJS       = $(patsubst $(ARDUINO_CORE_PATH)/%, $(OBJDIR)/%,$(CORE_OBJ_FILES))
 endif
