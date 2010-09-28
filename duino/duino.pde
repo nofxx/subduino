@@ -42,9 +42,8 @@ const int d11 = 11;
 const int d12 = 12;
 
 // Intervals (s)
-unsigned long shoot = 1;
 unsigned long sync  = 5 * SEC;
-unsigned long time_now, last_shoot, last_sync;
+unsigned long time_now, last_sync;
 
 int i = 0;
 int btnState = 0;
@@ -122,9 +121,6 @@ void setup()  {
   pinMode(d7, OUTPUT);
   pinMode(d10, OUTPUT);
 
-  // testFalse();
-  shoot = mintomilli(shoot);
-
   //  attachInterrupt(0, btnLed, CHANGE);
   Serial.begin(115200);
 }
@@ -171,14 +167,6 @@ void loop()  {
 
   // noInterrupts();
   //  interrupts();
-
-  // if ( abs(time_now - last_shoot) >= shoot) {
-  //   last_shoot = time_now;
-  //   //  Serial.println("SHOOTING");
-  //   digitalWrite(d6, HIGH);  // turn the d6 on
-  //   delay(400);                  // stop the program for some time
-  //   digitalWrite(d6, LOW);   // turn the d6 off
-  // }
 
     // Terminate message with a linefeed and a carriage return
     // Serial.print(13,BYTE);
