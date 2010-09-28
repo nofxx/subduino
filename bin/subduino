@@ -23,7 +23,7 @@ if ARGV.empty? || ARGV.join =~ /yml/
     puts "Using config file #{f}"
     AppConfig = YAML.load(File.read(f))["opts"]
   else
-    AppConfig = { "log_interval" => 30, "bauds" => 57600 }
+    AppConfig = { "log_interval" => 30, "bauds" => 115200 }
   end
 
   client = Faye::Client.new('http://localhost:8000/faye')
@@ -33,7 +33,7 @@ if ARGV.empty? || ARGV.join =~ /yml/
     Subduino.start do |read|
       #   Subduino::ArdIO.write("hi")
       if Debug
-        puts "--------------------- #{Time.now}"
+        # puts "--------------------- #{Time.now}"
         p read
       end
       if LastRun[:all] < (Time.now.to_i - AppConfig["log_interval"])
@@ -49,7 +49,7 @@ if ARGV.empty? || ARGV.join =~ /yml/
 elsif ARGV.join =~ /send/
   txt = ARGV[1..-1].join
   puts "Writing #{txt}"
-  Subduino::ArdPS.redis.publish('subduin', txt)
+  Subduino::ArdPS.write(txt)
 else
   require "subduino/scaffold/generator"
   dir = ARGV[0]

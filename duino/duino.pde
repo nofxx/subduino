@@ -1,5 +1,5 @@
 /*
- * Arduin
+ * Arduin v2
  *
  *
  *  /home/nofxx/projects/ardo/control
@@ -7,7 +7,7 @@
  *
  */
 
-#include <Messenger.h>
+// #include <Messenger.h>
 
 #define SEC  1000
 #define MIN  60000
@@ -48,70 +48,69 @@ unsigned long shoot = 1;
 unsigned long sync  = 5 * SEC;
 unsigned long time_now, last_shoot, last_sync;
 
+int i = 0;
 int btnState = 0;
 int touchState = 0;
 int motorState = 0;
 
-char buffer[MAX];
+char outbuf[MAX];
+char cmdbuf[MAX];
 
 volatile int rx_state = LOW;
 volatile int tx_state = LOW;
 
-Messenger message = Messenger(); //':');
-//String foobs = String();
-char foobs[MAX];
-
-// Create the callback function
 
 unsigned long mintomilli(unsigned long m) {
   return(m * 60000);
 }
 
-void btnLed() {
-  if(digitalRead(d2) == 1) {
-    Serial.println("BUTTON");
-    digitalWrite(infoPin, HIGH);
-    analogWrite(d3, 250);
-    if (motorState != 0) {
-      motorState = 0;
-    } else {
-      motorState = 1;
-    }
-  } else {
-    digitalWrite(infoPin, LOW);
-    analogWrite(d3, LOW);
-  }
-
+int ctoi( int c )
+{
+  return c - '0';
 }
 
+void read_sensors() {
+  sprintf(outbuf, "i0:%d,i1:%d,i2:%d,i3:%d,i4:%d,i5:%d,d11:%d,d12:%d",
+          analogRead(i0),
+          analogRead(i1),
+          analogRead(i2),
+          analogRead(i3),
+          analogRead(i4),
+          analogRead(i5),
+          digitalRead(d11),
+          digitalRead(d12));
 
-void messageRead() {
-  char * multiple;
-  int pin = 2;
-  int val = 0;
+  Serial.println(outbuf);
+}
 
-  // Loop through all the available elements of the message
-  while ( message.available() ) {
-    // val = message.readInt();
-    Serial.println("RECEIVED");
-    // Set the pin as determined by the message
-    //    analogWrite(infoPin, 250);
-    //  pin = pin + 1;
-    message.copyString(foobs, MAX);
-    //  multiple = strchr(foobs, ',');
-    // if(multiple == NULL) {
-    //   //       Serial.println("MULT");
-    //   int pin = message.readInt();
-    //   int val = message.readInt();
-    //   Serial.println("EXECUTING ");
-    //   Serial.println(pin);
-    //   Serial.println(val);
-    //   analogWrite(pin, val);
-    // } else {
-    //   pin = pin + 1;
-    // }
+/*
+
+  Command Protocol -> NNvvv
+  2 bytes pin number NN
+  3 bytes value vvv
+  Split commands with ','
+
+  13500,130,13999
+
+  Pin 13 -> 500 -> 000 -> 999
+
+*/
+void read_commands() {
+  char c;
+  while( Serial.available() && c != '\n' ) {  // buffer up a line
+    c = Serial.read();
+    if (c == '\n' || c == ',') {
+      int pin; int val;
+      pin = (ctoi(cmdbuf[0])*10) + ctoi(cmdbuf[1]);
+      val = (ctoi(cmdbuf[2])*100) + (ctoi(cmdbuf[3])*10) + ctoi(cmdbuf[4]);
+      analogWrite(pin, val);
+      i = 0;
+    } else if (c == 'x') {
+      read_sensors();
+    } else {
+      cmdbuf[i++] = c;
+    }
   }
-
 }
 
 void setup()  {
@@ -131,36 +130,41 @@ void setup()  {
   //  attachInterrupt(0, btnLed, CHANGE);
   Serial.begin(115200);
   //Serial.begin(9600);
-  message.attach(messageRead);
+  // message.attach(messageRead);
 }
 
 
 void loop()  {
-
-  while ( Serial.available() )  message.process(Serial.read());
-
   time_now = millis();
+
+  read_commands();
 
   // Sync over wire
   if ( abs(time_now - last_sync) >= sync) {
     last_sync = time_now;
-    sprintf(buffer, "i0:%d,i1:%d,i2:%d,i3:%d,i4:%d,i5:%d,d11:%d,d12:%d",
-            analogRead(i0),
-            analogRead(i1),
-            analogRead(i2),
-            analogRead(i3),
-            analogRead(i4),
-            analogRead(i5),
-            digitalRead(d11),
-            digitalRead(d12));
-
-    Serial.println("rooo");
-    Serial.println(foobs);
-    Serial.println(buffer);
+    read_sensors();
   }
 
 
 }
+
+
+// void btnLed() {
+//   if(digitalRead(d2) == 1) {
+//     Serial.println("BUTTON");
+//     digitalWrite(infoPin, HIGH);
+//     analogWrite(d3, 250);
+//     if (motorState != 0) {
+//       motorState = 0;
+//     } else {
+//       motorState = 1;
+//     }
+//   } else {
+//     digitalWrite(infoPin, LOW);
+//     analogWrite(d3, LOW);
+//   }
+
+// }
 
 
   // if (motorState != 0) {
