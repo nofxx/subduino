@@ -66,6 +66,11 @@ int ctoi( int c )
   return c - '0';
 }
 
+/*
+
+  Read Sensors Data
+
+*/
 void read_sensors() {
   sprintf(outbuf, "i0:%d,i1:%d,i2:%d,i3:%d,i4:%d,i5:%d,d11:%d,d12:%d",
           analogRead(i0),
@@ -78,6 +83,16 @@ void read_sensors() {
           digitalRead(d12));
 
   Serial.println(outbuf);
+}
+
+void switch_pin(int pin) {
+  analogWrite(pin, digitalRead(pin) == 0 ? 999 : 0);
+}
+
+void pulse_pin(int pin) {
+  analogWrite(pin, HIGH);
+  delay(500);
+  analogWrite(pin, LOW);
 }
 
 /*

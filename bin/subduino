@@ -3,6 +3,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'rubygems'
 require 'optparse'
 require 'subduino'
+require 'subduino/os'
 require 'faye'
 
 Debug = false
@@ -16,6 +17,9 @@ OptionParser.new { |op|
 
 # set :run, true
 
+if Debug
+  puts "Starting on #{OS}"
+end
 
 if ARGV.empty? || ARGV.join =~ /yml/
   LastRun = {:all => 0}
@@ -57,4 +61,3 @@ else
   `mkdir #{dir}` unless File.exists?(dir)
   Subduino::Generator.copy_files(dir)
 end
-
