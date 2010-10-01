@@ -1,3 +1,6 @@
+# From
+# http://rbjl.net/
+# Ruby Zucker
 require 'rbconfig'; RbConfig::CONFIG['host_os']
 
 module OS
