@@ -139,8 +139,16 @@ ifeq ($(strip $(NO_CORE)),)
 ifdef ARDUINO_CORE_PATH
 CORE_C_SRCS     = $(wildcard $(ARDUINO_CORE_PATH)/*.c)
 CORE_CPP_SRCS   = $(wildcard $(ARDUINO_CORE_PATH)/*.cpp)
-# EXTRA_CPP_SRCS  = $(wildcard $(ARDUINO_LIB_PATH)/ExtraLib/*.cpp)
-CORE_OBJ_FILES  = $(CORE_C_SRCS:.c=.o) $(CORE_CPP_SRCS:.cpp=.o) $(EXTRA_CPP_SRCS:.cpp=.o)
+
+# FIXME: Dynamic way
+ifdef ARDUINO_LIBS
+EXTRA_C_SRCS  = $(wildcard $(ARDUINO_LIB_PATH)/ExtraLib/*.c)
+EXTRA_CPP_SRCS  = $(wildcard $(ARDUINO_LIB_PATH)/ExtraLib/*.cpp)
+CORE_OBJ_FILES  = $(CORE_C_SRCS:.c=.o) $(CORE_CPP_SRCS:.cpp=.o) $(EXTRA_C_SRCS:.c=.o) $(EXTRA_CPP_SRCS:.cpp=.o)
+endif
+ifndef ARDUINO_LIBS
+CORE_OBJ_FILES  = $(CORE_C_SRCS:.c=.o) $(CORE_CPP_SRCS:.cpp=.o)
+endif
 CORE_OBJS       = $(patsubst $(ARDUINO_CORE_PATH)/%, $(OBJDIR)/%,$(CORE_OBJ_FILES))
 endif
 endif
