@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "subduino"
     gem.summary = "Arduino Ruby Helpers"
-    gem.description = "Interface, compile, upload, play with arduino/ruby"
+    gem.description = "Interface, compile, upload... Play with arduino on ruby!"
     gem.email = "x@nofxx.com"
     gem.homepage = "http://github.com/nofxx/subduino"
     gem.authors = ["Marcos Piccinini"]

@@ -112,9 +112,11 @@ void read_commands() {
   while( Serial.available() && c != '\n' ) {  // buffer up a line
     c = Serial.read();
     if (c == '\n' || c == ',') {
+      Serial.println("<<");
       int pin; int val;
       pin = (ctoi(cmdbuf[0])*10) + ctoi(cmdbuf[1]);
       val = (ctoi(cmdbuf[2])*100) + (ctoi(cmdbuf[3])*10) + ctoi(cmdbuf[4]);
+      Serial.println("<<");
       analogWrite(pin, val);
       i = 0;
     } else if (c == 'x') {
@@ -128,13 +130,20 @@ void read_commands() {
 void setup()  {
   // Atmega defaults INPUT
   pinMode(infoPin, OUTPUT);
-  pinMode(d2, OUTPUT);
-  pinMode(d3, OUTPUT);
-  pinMode(d4, OUTPUT);
-  pinMode(d5, OUTPUT);
-  pinMode(d6, OUTPUT);
-  pinMode(d7, OUTPUT);
-  pinMode(d10, OUTPUT);
+  pinMode(rxPin, OUTPUT);
+  pinMode(txPin, OUTPUT);
+  for (int k=0;k<=7;k++)
+    pinMode(k,OUTPUT);
+  // pinMode(d2, OUTPUT);
+  // pinMode(d3, OUTPUT);
+  // pinMode(d4, OUTPUT);
+  // pinMode(d5, OUTPUT);
+  // pinMode(d6, OUTPUT);
+  // pinMode(d7, OUTPUT);
+  // pinMode(d10, OUTPUT);
+  // digitalWrite(rxPin, 0); FAIL
+  // digitalWrite(txPin, 0);
+
 
   //  attachInterrupt(0, btnLed, CHANGE);
   Serial.begin(115200);

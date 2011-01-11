@@ -9,10 +9,11 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Marcos Piccinini"]
-  s.date = %q{2010-09-30}
+  s.date = %q{2010-10-21}
   s.description = %q{Interface, compile, upload, play with arduino/ruby}
   s.email = %q{x@nofxx.com}
   s.executables = ["subduino-cli", "subduino"]
+  s.extensions = ["ext/subduino/extconf.rb"]
   s.files = [
     ".document",
      ".gitignore",
@@ -65,7 +66,8 @@ Gem::Specification.new do |s|
      "spec/spec_helper.rb",
      "spec/subduino/ard_io_spec.rb",
      "spec/subduino/parse_spec.rb",
-     "spec/subduino/store_spec.rb"
+     "spec/subduino/store_spec.rb",
+     "spec/subduino/cubduino_spec.rb"
   ]
 
   if s.respond_to? :specification_version then

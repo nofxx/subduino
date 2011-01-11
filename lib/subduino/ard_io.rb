@@ -9,7 +9,7 @@ module Subduino
       # Direct access to the SerialPort instance.
       #
       def sp
-        @sp ||= SerialPort.new(Arduino.find_usb, BAUDS) #, DATA_BITS, DATA_STOP, parity)
+        @sp ||= SerialPort.new(Arduino.find_usb, AppConfig[:bauds] || 115200) #, DATA_BITS, DATA_STOP, parity)
         # @sp.read_timeout = 10;# @sp.write_timeout = 10
       end
 
@@ -24,6 +24,7 @@ module Subduino
         Log.info "[USB] Starting USB Connect..." + sp.get_modem_params.map { |k,v| "#{k}: #{v}" }.join(" ")
         Log.info "[USB] Read Timeout #{sp.read_timeout}" # {sp.write_timeout}"
 
+        if sp
         @iothread ||= Thread.new do
           Thread.current.abort_on_exception = false
           icache = []
@@ -31,8 +32,11 @@ module Subduino
             begin
               while char = sp.getc
                 if !char.valid_encoding?
-                  puts "Bad char #{char}"
+                  bytes = char.bytes.to_a
+                  hexes = bytes.map { |b| b.to_s(16) }
+                  puts " - Bad char #{char} - (Hex: #{char.unpack('H')} | Byte(s) #{bytes} | Hexe(s) #{hexes}"
                 elsif char !~ /\n|\r/
+                  # print char if Debug
                   icache << char
                 else
                   data = icache.join(""); icache = []
@@ -49,6 +53,8 @@ module Subduino
             end
           end
         end
+        end
+
       end
 
       #
@@ -60,8 +66,8 @@ module Subduino
       #
       def write(msg)
         Log.info "[IO  TX] #{msg}"
-        txt = msg.gsub("\r", "\n")
-        txt += "\n" unless txt =~ /^\\n/
+        txt = msg.gsub("\r|\n", "")
+       # txt += "\n" unless txt =~ /^\\n/
         puts "=> Sending #{txt.inspect}" if Debug
         sp.puts(msg)
       end

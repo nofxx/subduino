@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+
+# usage: usb-power bus/device port on|off
+#
+# example:
+#   usb-power 004/006 2 on
+#   usb-power 004/006 2 off
+
+require 'usb'
+require 'optparse'
+
+USB_RT_PORT = USB::USB_TYPE_CLASS | USB::USB_RECIP_OTHER
+USB_PORT_FEAT_POWER = 8
+
+  USB.devices.find_all {|d|
+ #   p d
+     0x200 <= d.bcdDevice &&
+     d.bDeviceClass == USB::USB_CLASS_HUB
+  }
+
+# require 'pp'
+
+# def power_on(h, port)
+#   h.usb_control_msg(USB_RT_PORT, USB::USB_REQ_SET_FEATURE, USB_PORT_FEAT_POWER, port, "", 0)
+# end
+
+# def power_off(h, port)
+#   h.usb_control_msg(USB_RT_PORT, USB::USB_REQ_CLEAR_FEATURE, USB_PORT_FEAT_POWER, port, "", 0)
+# end
+
+# bus_device = ARGV.shift
+# port = ARGV.shift.to_i
+# on_off = ARGV.shift
+
+# %r{/} =~ bus_device
+# bus = $`.to_i
+# device = $'.to_i
+
+# USB.find_bus(bus).find_device(device).open {|h|
+#   if on_off == 'off'
+#     power_off(h, port)
+#   else
+#     power_on(h, port)
+#   end
+# }

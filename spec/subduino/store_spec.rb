@@ -5,11 +5,11 @@ describe "Store" do
   it "should write things" do
     Store.flush
     Store.write(:temp, 18)
-    Store.count.should eql(2)
+    Store.count.should eql(1)
   end
 
   it "should read" do
-    Store.read(:temp).should eql("18")
+    Store.read("now:inputs:temp").should eql("18")
   end
 
   it "should read array"

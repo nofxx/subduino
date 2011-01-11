@@ -14,7 +14,7 @@ module Subduino
       end
 
       def read(key)
-        redis.get key
+        redis.get key.to_s
       end
 
       def timestamp
@@ -23,9 +23,8 @@ module Subduino
 
       def write(k, v, stamp = false)
         return unless redis #.connected?
-        stamp ?  redis.rpush("log:inputs:#{k}", "#{timestamp}:#{v}") : redis.set("now:inputs:"+k, v)
+        stamp ?  redis.rpush("log:inputs:#{k}", "#{timestamp}:#{v}") : redis.set("now:inputs:#{k}", v)
       end
-
 
       def add_to_store(key, val=nil)
         if val
@@ -38,7 +37,7 @@ module Subduino
       end
 
       def add_csv_to_store(csv, stamp = false)
-        Log.info "[STORE] CSV #{Time.now.to_i}"
+        # Log.info "[STORE] CSV #{Time.now.to_i}"
         csv.split(",").each do |d|
           comm, value = d.split(":")
           write(comm, value, stamp)
