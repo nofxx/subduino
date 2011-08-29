@@ -9,7 +9,7 @@ module Subduino
       # Direct access to the SerialPort instance.
       #
       def sp
-        @sp ||= SerialPort.new(Arduino.find_usb, AppConfig[:bauds] || 115200) #, DATA_BITS, DATA_STOP, parity)
+        @sp ||= SerialPort.new(Arduino.find_usb, AppConfig[:bauds] || 57600) #, DATA_BITS, DATA_STOP, parity)
         # @sp.read_timeout = 10;# @sp.write_timeout = 10
       end
 
@@ -21,12 +21,13 @@ module Subduino
       # Feed it with a block to read the text.
       #
       def read(&proc)
-        Log.info "[USB] Starting USB Connect..." + sp.get_modem_params.map { |k,v| "#{k}: #{v}" }.join(" ")
+        Log.info "[USB] Found Device...#{Arduino.find_usb}"
+        Log.info "[USB] Starting Connect..." + sp.get_modem_params.map { |k,v| "#{k}: #{v}" }.join(" ")
         Log.info "[USB] Read Timeout #{sp.read_timeout}" # {sp.write_timeout}"
 
         if sp
         @iothread ||= Thread.new do
-          Thread.current.abort_on_exception = false
+          # Thread.current.abort_on_exception = false
           icache = []
           loop do
             begin
@@ -50,6 +51,8 @@ module Subduino
             rescue => e
               Log.error "[USB] Error #{e}"
               Log.error e.backtrace.join("\n")
+              stop!
+              exit 1
             end
           end
         end
@@ -78,6 +81,8 @@ module Subduino
       #
       def stop!
         sp.close
+        Thread.kill @iothread
+        Log.info "[IO] K.I.A"
       end
 
     end

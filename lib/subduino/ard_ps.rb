@@ -9,7 +9,7 @@ module Subduino
       # Direct access to the Redis instance.
       #
       def redis
-        @redis ||= Redis.new(:timeout => 0) rescue false
+        @redis ||= Redis.new(:timeout => 0)
       end
 
       #
@@ -19,7 +19,7 @@ module Subduino
       #
       def read
         return Log.warn "[PubSub] Not started..." unless redis
-        Thread.new do
+        @psthread = Thread.new do
           begin
             redis.subscribe('subduino') do |on|
               on.subscribe {|klass, num_subs| Log.info "[PubSub] Subscribed to #{klass} (#{num_subs} subscriptions)" }
@@ -33,6 +33,7 @@ module Subduino
           rescue => e
             Log.error "[PubSub] Error #{e}"
             Log.error e.backtrace.join("\n")
+            exit 1
           end
 
         end
@@ -52,7 +53,9 @@ module Subduino
       # Fatality
       #
       def stop!
+        Thread.kill @psthread
         redis.disconnect if redis
+        Log.info "[PubSub] K.I.A"
       end
 
     end
