@@ -8,9 +8,8 @@ module Subduino
       #
       # Direct access to the SerialPort instance.
       #
-      def sp
-        @sp ||= SerialPort.new(Arduino.find_usb, AppConfig[:bauds] || 57600) #, DATA_BITS, DATA_STOP, parity)
-        # @sp.read_timeout = 10;# @sp.write_timeout = 10
+      def serial
+        @serial ||= Serial.new
       end
 
       #
@@ -21,41 +20,42 @@ module Subduino
       # Feed it with a block to read the text.
       #
       def read(&proc)
-        Log.info "[USB] Found Device...#{Arduino.find_usb}"
-        Log.info "[USB] Starting Connect..." + sp.get_modem_params.map { |k,v| "#{k}: #{v}" }.join(" ")
-        Log.info "[USB] Read Timeout #{sp.read_timeout}" # {sp.write_timeout}"
+        Log.info "[USB] Found Device...#{serial.port}"
+        Log.info "[USB] Starting Connect..." + serial.sp.get_modem_params.map { |k,v| "#{k}: #{v}" }.join(" ")
+        # Log.info "[USB] Read Timeout #{sp.read_timeout}" # {sp.write_timeout}"
 
-        if sp
-        @iothread ||= Thread.new do
-          # Thread.current.abort_on_exception = false
-          icache = []
-          loop do
-            begin
-              while char = sp.getc
-                if !char.valid_encoding?
-                  bytes = char.bytes.to_a
-                  hexes = bytes.map { |b| b.to_s(16) }
-                  puts " - Bad char #{char} - (Hex: #{char.unpack('H')} | Byte(s) #{bytes} | Hexe(s) #{hexes}"
-                elsif char !~ /\n|\r/
-                  # print char if Debug
-                  icache << char
-                else
-                  data = icache.join(""); icache = []
-                  unless data.empty?
-                    Log.info "[IO  RX] #{data}"
-                    proc.call(data)
+        if serial.up?
+          @iothread ||= Thread.new do
+            # Thread.current.abort_on_exception = false
+            icache = []
+            loop do
+              begin
+                while char = @serial.read
+                  if !char.valid_encoding?
+                    bytes = char.bytes.to_a
+                    hexes = bytes.map { |b| b.to_s(16) }
+                    puts " - Bad char #{char} - (Hex: #{char.unpack('H')} | Byte(s) #{bytes} | Hexe(s) #{hexes}"
+                  # elsif char !~ /\n|\r/
+                  #   # print char if Debug
+                  #   icache << char
+                  else
+                    #data = icache.join(""); icache = []
+                    data = char
+                    unless data.empty?
+                      Log.info "[IO  RX] #{data}"
+                      proc.call(data)
+                    end
                   end
+                  # sleep 1
                 end
-                # sleep 1
+              rescue => e
+                Log.error "[USB] Error #{e}"
+                Log.error e.backtrace.join("\n")
+                stop!
+                exit 1
               end
-            rescue => e
-              Log.error "[USB] Error #{e}"
-              Log.error e.backtrace.join("\n")
-              stop!
-              exit 1
             end
           end
-        end
         end
 
       end
@@ -69,10 +69,7 @@ module Subduino
       #
       def write(msg)
         Log.info "[IO  TX] #{msg}"
-        txt = msg.gsub("\r|\n", "")
-       # txt += "\n" unless txt =~ /^\\n/
-        puts "=> Sending #{txt.inspect}" if Debug
-        sp.puts(msg)
+        sp.write(msg)
       end
 
 
@@ -80,7 +77,7 @@ module Subduino
       # Finish Him!
       #
       def stop!
-        sp.close
+        serial.kill
         Thread.kill @iothread
         Log.info "[IO] K.I.A"
       end
