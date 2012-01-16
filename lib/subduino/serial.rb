@@ -1,17 +1,21 @@
 module Subduino
 
   class Serial
-    attr_reader :sp, :port
+    attr_reader :sp, :port, :bauds
 
-    def initialize
+    def initialize(bauds = 57600)
+      @bauds = bauds
       @port = find_port
-      @sp ||= SerialPort.new(@port, AppConfig[:bauds] || 57600) #, DATA_BITS, DATA_STOP, parity)
-      # @sp.read_timeout = 10;# @sp.write_timeout = 10
-
+      @sp ||= SerialPort.new(@port, bauds) #, DATA_BITS, DATA_STOP, parity)
+      # @sp.read_timeout  = 10
+      # @sp.write_timeout = 10
     end
 
     def find_port
-      Dir['/dev/ttyUSB*'].first
+      prefix = RUBY_PLATFORM =~ /darwin/ ? ".usbmodem" : "USB"
+      port =  Dir.glob('/dev/tty#{prefix}*').first
+      raise "Can't find serial port" unless port
+      port
     end
 
     def read
