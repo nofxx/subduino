@@ -9,7 +9,7 @@ module Subduino
       # Direct access to the SerialPort instance.
       #
       def serial
-        @serial ||= Serial.new
+        @serial ||= Serial.new(Opts[:bauds])
       end
 
       #
@@ -69,7 +69,7 @@ module Subduino
       #
       def write(msg)
         Log.info "[IO  TX] #{msg}"
-        sp.write(msg)
+        serial.write(msg)
       end
 
 
