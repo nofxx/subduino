@@ -13,7 +13,7 @@ module Subduino
 
     def find_port
       prefix = RUBY_PLATFORM =~ /darwin/ ? ".usbmodem" : "USB"
-      port =  Dir.glob('/dev/tty#{prefix}*').first
+      port =  Dir.glob("/dev/tty#{prefix}*").first
       raise "Can't find serial port" unless port
       port
     end
