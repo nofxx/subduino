@@ -1,50 +1,36 @@
-require 'rubygems'
-require 'rake'
+require 'bundler'
+Bundler.setup
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "subduino"
-    gem.summary = "Arduino Ruby Helpers"
-    gem.description = "Interface, compile, upload... Play with arduino on ruby!"
-    gem.email = "x@nofxx.com"
-    gem.homepage = "http://github.com/nofxx/subduino"
-    gem.authors = ["Marcos Piccinini"]
-    gem.add_dependency "redis"
-    gem.add_dependency "eventmachine"
-    gem.add_development_dependency "rspec", ">= 1.2.9"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+require "rspec"
+require "rspec/core/rake_task"
+
+$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
+require "subduino/version"
+
+desc "Builds the gem"
+task :gem => :build
+task :build do
+  system "gem build subduino.gemspec"
+  Dir.mkdir("pkg") unless Dir.exists?("pkg")
+  system "mv subduino-#{Subduino::VERSION}.gem pkg/"
 end
 
-# require 'spec/rake/spectask'
-# Spec::Rake::SpecTask.new(:spec) do |spec|
-#   spec.libs << 'lib' << 'spec'
-#   spec.spec_files = FileList['spec/**/*_spec.rb']
-# end
-
-# Spec::Rake::SpecTask.new(:rcov) do |spec|
-#   spec.libs << 'lib' << 'spec'
-#   spec.pattern = 'spec/**/*_spec.rb'
-#   spec.rcov = true
-# end
-
-# task :spec => :check_dependencies
-
-# task :default => :spec
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "subduino #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+task :install => :build do
+  system "sudo gem install pkg/subduino-#{Subduino::VERSION}.gem"
 end
+
+task :release => :build do
+  system "git tag -a v#{Subduino::VERSION} -m 'Tagging #{Subduino::VERSION}'"
+  system "git push --tags"
+  system "gem push pkg/subduino-#{Subduino::VERSION}.gem"
+end
+
+
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = "spec/**/*_spec.rb"
+end
+
+task :default => [:spec]
 
 desc "Download and install arduino libraries"
 task :clibs do |t|

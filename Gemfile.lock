@@ -1,0 +1,30 @@
+PATH
+  remote: .
+  specs:
+    subduino (0.5.0)
+      eventmachine
+      redis
+      serialport
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    diff-lcs (1.1.3)
+    eventmachine (0.12.10)
+    redis (2.2.2)
+    rspec (2.8.0)
+      rspec-core (~> 2.8.0)
+      rspec-expectations (~> 2.8.0)
+      rspec-mocks (~> 2.8.0)
+    rspec-core (2.8.0)
+    rspec-expectations (2.8.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.8.0)
+    serialport (1.0.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rspec (>= 1.2.9)
+  subduino!
