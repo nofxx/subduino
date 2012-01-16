@@ -22,6 +22,15 @@ require 'subduino/serial'
 #Thread.current.abort_on_exception = false
 
 module Subduino
+  if File.exists?(f = ARGV.join)
+    # return unless f =~ /\.yml$/
+    puts "Using config file #{f}"
+    Opts = YAML.load(File.read(f))["opts"]
+  else
+    Opts = { :log_interval => 30 }
+  end
+
+
   Log = Logger.new(const_defined?("DEBUG") ? STDOUT : "subduino-debug.log")
   # BAUDS = [300, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, 115200]
   # DATA_BITS = 8

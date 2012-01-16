@@ -1,56 +1,44 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+#require 'pry'
+#require 'faye'
 require 'rubygems'
 require 'optparse'
-
+require 'subduino'
+require 'subduino/os'
 
 Debug = false
 
-if File.exists?(f = ARGV.join)
-  return unless f =~ /\.yml$/
-  puts "Using config file #{f}"
-  AppConfig = YAML.load(File.read(f))["opts"]
-else
-  AppConfig = { :log_interval => 30 }
-end
-
-OptionParser.new { |op|
+op = OptionParser.new { |op|
   op.on('-d', '--debug')  { |d| Debug = true }
-  op.on('-b', '--bauds=BAUDS', Integer)  { |b| AppConfig[:bauds] = b }
-  op.on('-e env')    { |val| set :environment, val.to_sym }
-  op.on('-s server') { |val| set :server, val }
-  op.on('-p port')   { |val| set :port, val.to_i }
+  op.on('-b', '--bauds=BAUDS', Integer)  { |b| Subduino::Opts[:bauds] = b }
+  op.on('-p', '--port=/dev/port')   { |p| Subduino::Opts[:port] = p }
+  # op.on('-e env')    { |val| set :environment, val.to_sym }
+  # op.on('-s server') { |val| set :server, val }
   op.parse!(ARGV)
 }
 
-require 'subduino'
-require 'subduino/os'
-require 'faye'
 # Cubduino.write("hahah")
 # puts Cubduino.read
-
-# set :run, true
-
 
 if ARGV.empty? || ARGV.join =~ /yml/
   LastRun = {:all => 0}
 
-  client = Faye::Client.new('http://localhost:8000/faye')
+  # client = Faye::Client.new('http://localhost:8000/faye')
 
   EM.run do
     if Debug
       puts "Starting on #{OS}"
+      puts "--------------------- #{Time.now}"
     end
 
     Subduino.start do |read|
-      #   Subduino::ArdIO.write("hi")
-      if Debug
-        #puts "--------------------- #{Time.now}"
-        #p read
-      end
-      if LastRun[:all] < (Time.now.to_i - AppConfig[:log_interval])
+
+      print read if Debug
+
+      if LastRun[:all] < (Time.now.to_i - Subduino::Opts[:log_interval])
         LastRun[:all] = Time.now.to_i
-        client.publish('/stats', 'data' => read)
+        # client.publish('/stats', 'data' => read)
         Subduino::Store.add_csv_to_store(read, true)
       else
         Subduino::Store.add_csv_to_store(read)
