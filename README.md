@@ -15,14 +15,18 @@ Install
 Requirements
 ------------
 
-* "serialport":http://github.com/hparra/ruby-serialport
+Gems:
+
+* serialport http://github.com/hparra/ruby-serialport
 
 If you want:
 
 PubSub:
-* "redis":http://github.com/ezmobius/redis-rb
+
+* redis
 
 WebApp:
+
 * sinatra
 * haml
 
